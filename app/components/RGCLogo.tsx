@@ -104,9 +104,9 @@ export default function RGCLogo({ size = 48, showText = true, className = "" }: 
           <circle cx="77" cy="79"  r="2.2" fill="white" opacity="0.85" />
         </g>
 
-        {/* ── Meeple — center, now blue (same blue as removed outer ring: #1565C0) ── */}
+        {/* ── Meeple — center, orange ── */}
         {/* Head */}
-        <circle cx="100" cy="69" r="14" fill="#1565C0" stroke="#0D3B8E" strokeWidth="2" />
+        <circle cx="100" cy="69" r="14" fill="#F59E0B" stroke="#D97706" strokeWidth="2" />
         {/* Body: shoulders → arms → waist → legs */}
         <path
           d="
@@ -129,8 +129,8 @@ export default function RGCLogo({ size = 48, showText = true, className = "" }: 
             L 109,83
             Z
           "
-          fill="#1565C0"
-          stroke="#0D3B8E"
+          fill="#F59E0B"
+          stroke="#D97706"
           strokeWidth="2"
         />
 
