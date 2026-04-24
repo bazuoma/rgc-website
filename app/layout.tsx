@@ -4,8 +4,20 @@ import Navbar from "./components/Navbar";
 
 export const metadata: Metadata = {
   title: "Real Gamers Club – Where Real Gamers Unite",
-  description: "A social club for gamers who want to meet for game nights, compete, and build community.",
-  icons: { icon: "/icon.svg", shortcut: "/icon.svg", apple: "/icon.svg" },
+  description: "In-person board game, card game, and video game nights in Los Angeles. No logins. No leaderboards. Just good nights.",
+  metadataBase: new URL('https://realgamers.club'),
+  openGraph: {
+    title: 'Real Gamers Club – Where Real Gamers Unite',
+    description: 'In-person game nights in LA. Real tables, real people.',
+    url: 'https://realgamers.club',
+    siteName: 'Real Gamers Club',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Real Gamers Club',
+    description: 'In-person game nights in LA. Real tables, real people.',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
