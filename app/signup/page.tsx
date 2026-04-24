@@ -26,7 +26,7 @@ export default function SignupPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6 bg-grid" style={{ backgroundColor: "#0a0a0f" }}>
+      <div className="min-h-screen flex items-center justify-center px-6 bg-grid" style={{ backgroundColor: "#0d0600" }}>
         <div className="card-gaming p-12 max-w-md w-full text-center" style={{ borderColor: "#2563eb40", boxShadow: "0 0 60px #2563eb10" }}>
           <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: "#2563eb20", border: "2px solid #2563eb" }}>
             <svg className="w-10 h-10" fill="none" stroke="#2563eb" strokeWidth={2} viewBox="0 0 24 24">
@@ -49,7 +49,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-grid py-16 px-6" style={{ backgroundColor: "#0a0a0f" }}>
+    <div className="min-h-screen bg-grid py-16 px-6" style={{ backgroundColor: "#0d0600" }}>
       <div className="max-w-xl mx-auto">
 
         {/* Header */}
@@ -79,7 +79,7 @@ export default function SignupPage() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg font-sans text-sm text-white placeholder-slate-600 outline-none transition-colors"
-                style={{ backgroundColor: "#0a0a0f", border: "1px solid #1c1f35" }}
+                style={{ backgroundColor: "#0d0600", border: "1px solid #1c1f35" }}
                 onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
                 onBlur={(e)  => (e.target.style.borderColor = "#1c1f35")}
               />
@@ -98,7 +98,7 @@ export default function SignupPage() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg font-sans text-sm text-white placeholder-slate-600 outline-none transition-colors"
-                style={{ backgroundColor: "#0a0a0f", border: "1px solid #1c1f35" }}
+                style={{ backgroundColor: "#0d0600", border: "1px solid #1c1f35" }}
                 onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
                 onBlur={(e)  => (e.target.style.borderColor = "#1c1f35")}
               />
@@ -116,7 +116,7 @@ export default function SignupPage() {
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg font-sans text-sm text-white placeholder-slate-600 outline-none transition-colors"
-                style={{ backgroundColor: "#0a0a0f", border: "1px solid #1c1f35" }}
+                style={{ backgroundColor: "#0d0600", border: "1px solid #1c1f35" }}
                 onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
                 onBlur={(e)  => (e.target.style.borderColor = "#1c1f35")}
               />
@@ -137,7 +137,7 @@ export default function SignupPage() {
                       onClick={() => toggleInterest(item)}
                       className="px-3 py-1.5 rounded-lg font-sans font-bold text-xs transition-all duration-200 cursor-pointer"
                       style={{
-                        backgroundColor: sel ? "#2563eb20" : "#0a0a0f",
+                        backgroundColor: sel ? "#2563eb20" : "#0d0600",
                         border:          `1px solid ${sel ? "#2563eb" : "#1c1f35"}`,
                         color:           sel ? "#60a5fa" : "#64748b",
                         boxShadow:       sel ? "0 0 8px #2563eb20" : "none",
