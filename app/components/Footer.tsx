@@ -3,9 +3,12 @@
 import { useRouter } from 'next/navigation';
 import RgcLogo from "./RgcLogo";
 import { theme } from "./theme";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 export default function Footer() {
   const router = useRouter();
+  const isMobile = useIsMobile();
+
   const linkStyle: React.CSSProperties = {
     color: theme.inkDim, textDecoration: 'none', cursor: 'pointer',
     fontFamily: 'Nunito, sans-serif', fontWeight: 600,
@@ -22,9 +25,9 @@ export default function Footer() {
 
   return (
     <footer style={{
-      padding: '56px 40px 40px',
+      padding: isMobile ? '40px 20px 32px' : '56px 40px 40px',
       borderTop: `1px solid ${theme.line}`,
-      marginTop: 80,
+      marginTop: isMobile ? 48 : 80,
       display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
       gap: 40, flexWrap: 'wrap',
       color: theme.inkDim, fontFamily: 'Nunito, sans-serif',

@@ -4,6 +4,7 @@ import { Theme } from './theme';
 import GameBadge from './GameBadge';
 import { ArrowRight, CheckIcon, MailIcon } from './Icons';
 import { RgcEvent } from '../data/events';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const MONTHS_ARR = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAYS_ARR = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -24,6 +25,7 @@ function RsvpButton({ event, state, onToggle, theme, compact = false }: {
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLFormElement>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
   const canSubmit = form.name.trim().length > 0 && validEmail;
@@ -104,8 +106,12 @@ function RsvpButton({ event, state, onToggle, theme, compact = false }: {
           onSubmit={confirm}
           onClick={(e) => e.stopPropagation()}
           style={{
-            position: 'absolute', top: 'calc(100% + 10px)', right: 0, zIndex: 40,
-            width: 300, padding: 18, borderRadius: 14,
+            position: 'absolute', top: 'calc(100% + 10px)',
+            left: isMobile ? 0 : 'auto',
+            right: isMobile ? 'auto' : 0,
+            zIndex: 40,
+            width: isMobile ? 'min(290px, calc(100vw - 40px))' : 300,
+            padding: 18, borderRadius: 14,
             background: 'rgba(20,10,2,0.98)',
             border: `1px solid ${theme.lineStrong}`,
             boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
@@ -311,6 +317,7 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
   idx?: number;
 }) {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
   const filled = Math.min(1, (event.rsvp + (rsvpState === 'going' ? 1 : 0)) / event.capacity);
   const spotsLeft = event.capacity - event.rsvp - (rsvpState === 'going' ? 1 : 0);
   const typeColor = event.type === 'Video games' ? theme.blue
@@ -333,87 +340,75 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
         position: 'relative',
       }}
     >
-      <div
-        onClick={() => setOpen((o) => !o)}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '110px 1fr auto',
-          gap: 28,
-          padding: '24px 28px',
-          alignItems: 'center',
-          cursor: 'pointer',
-        }}
-      >
-        {/* Date stamp */}
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
-          fontFamily: 'Nunito, sans-serif',
-        }}>
-          <div style={{
-            fontSize: 11, fontWeight: 800, letterSpacing: '0.14em',
-            textTransform: 'uppercase', color: typeColor, marginBottom: 4,
-          }}>
-            {DAYS_ARR[event.date.getDay()]}
+      {isMobile ? (
+        /* ── Mobile collapsed row ── */
+        <div
+          onClick={() => setOpen((o) => !o)}
+          style={{ padding: '18px 20px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 10 }}
+        >
+          {/* Row 1: date info + RSVP button */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+            <div style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div style={{
+                fontSize: 11, fontWeight: 800, letterSpacing: '0.14em',
+                textTransform: 'uppercase', color: typeColor, marginBottom: 2,
+              }}>
+                {DAYS_ARR[event.date.getDay()]}
+              </div>
+              <div style={{
+                fontSize: 34, fontWeight: 900, color: theme.ink, lineHeight: 1,
+                letterSpacing: '-0.02em',
+              }}>
+                {event.date.getDate()}
+              </div>
+              <div style={{
+                fontSize: 12, fontWeight: 700, color: theme.inkDim, marginTop: 3,
+                letterSpacing: '0.04em', textTransform: 'uppercase',
+              }}>
+                {MONTHS_ARR[event.date.getMonth()]}
+                {' · '}
+                {timeStr}
+              </div>
+            </div>
+            <RsvpButton event={event} state={rsvpState} onToggle={onToggle} theme={theme} />
           </div>
-          <div style={{
-            fontSize: 34, fontWeight: 900, color: theme.ink, lineHeight: 1,
-            letterSpacing: '-0.02em',
-          }}>
-            {event.date.getDate()}
-          </div>
-          <div style={{
-            fontSize: 12, fontWeight: 700, color: theme.inkDim, marginTop: 4,
-            letterSpacing: '0.04em', textTransform: 'uppercase',
-          }}>
-            {MONTHS_ARR[event.date.getMonth()]}
-            {' · '}
-            {timeStr}
-          </div>
-        </div>
 
-        {/* Main content: location-first, then games */}
-        <div style={{ minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap' }}>
-            <h3 style={{
-              margin: 0,
-              fontFamily: 'Nunito, sans-serif', fontWeight: 900,
-              fontSize: 24, color: theme.ink, letterSpacing: '-0.01em',
-              lineHeight: 1.1,
-            }}>
-              {event.venue}
-            </h3>
-            <span style={{
-              fontFamily: 'Nunito, sans-serif', fontSize: 14,
-              color: theme.inkDim, fontWeight: 600,
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-            }}>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 1c2 0 3.5 1.5 3.5 3.5 0 2.5-3.5 6-3.5 6s-3.5-3.5-3.5-6C2.5 2.5 4 1 6 1z"/><circle cx="6" cy="4.5" r="1.2"/></svg>
-              {event.address}, {event.city}
-            </span>
-          </div>
-          <div style={{
-            display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12,
-            alignItems: 'center',
+          {/* Row 2: venue name */}
+          <h3 style={{
+            margin: 0,
+            fontFamily: 'Nunito, sans-serif', fontWeight: 900,
+            fontSize: 20, color: theme.ink, letterSpacing: '-0.01em',
+            lineHeight: 1.2,
           }}>
+            {event.venue}
+          </h3>
+
+          {/* Row 3: address */}
+          <div style={{
+            fontFamily: 'Nunito, sans-serif', fontSize: 13,
+            color: theme.inkDim, fontWeight: 600,
+            display: 'flex', alignItems: 'center', gap: 5,
+          }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M6 1c2 0 3.5 1.5 3.5 3.5 0 2.5-3.5 6-3.5 6s-3.5-3.5-3.5-6C2.5 2.5 4 1 6 1z"/>
+              <circle cx="6" cy="4.5" r="1.2"/>
+            </svg>
+            {event.address}, {event.city}
+          </div>
+
+          {/* Row 4: Playing label + game badges */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
             <span style={{
               fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800,
               color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase',
-              marginRight: 4,
             }}>Playing</span>
             {event.games.map((g) => (
               <GameBadge key={g} name={g} theme={theme} size="sm" />
             ))}
           </div>
-        </div>
 
-        {/* RSVP cluster */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
-          <RsvpButton event={event} state={rsvpState} onToggle={onToggle} theme={theme} />
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            fontFamily: 'Nunito, sans-serif', fontSize: 11, color: theme.inkDim,
-            letterSpacing: '0.02em',
-          }}>
+          {/* Row 5: spots bar + count */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
             <div style={{
               position: 'relative', width: 72, height: 4, borderRadius: 2,
               background: theme.line, overflow: 'hidden',
@@ -424,20 +419,121 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
                 transition: 'width .3s',
               }} />
             </div>
-            <span style={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{
+              fontFamily: 'Nunito, sans-serif', fontSize: 11, color: theme.inkDim,
+              fontWeight: 700, fontVariantNumeric: 'tabular-nums',
+            }}>
               {spotsLeft > 0 ? `${spotsLeft} spots left` : 'Full'}
             </span>
           </div>
         </div>
-      </div>
+      ) : (
+        /* ── Desktop collapsed row ── */
+        <div
+          onClick={() => setOpen((o) => !o)}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '110px 1fr auto',
+            gap: 28,
+            padding: '24px 28px',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          {/* Date stamp */}
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
+            fontFamily: 'Nunito, sans-serif',
+          }}>
+            <div style={{
+              fontSize: 11, fontWeight: 800, letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: typeColor, marginBottom: 4,
+            }}>
+              {DAYS_ARR[event.date.getDay()]}
+            </div>
+            <div style={{
+              fontSize: 34, fontWeight: 900, color: theme.ink, lineHeight: 1,
+              letterSpacing: '-0.02em',
+            }}>
+              {event.date.getDate()}
+            </div>
+            <div style={{
+              fontSize: 12, fontWeight: 700, color: theme.inkDim, marginTop: 4,
+              letterSpacing: '0.04em', textTransform: 'uppercase',
+            }}>
+              {MONTHS_ARR[event.date.getMonth()]}
+              {' · '}
+              {timeStr}
+            </div>
+          </div>
+
+          {/* Main content: location-first, then games */}
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap' }}>
+              <h3 style={{
+                margin: 0,
+                fontFamily: 'Nunito, sans-serif', fontWeight: 900,
+                fontSize: 24, color: theme.ink, letterSpacing: '-0.01em',
+                lineHeight: 1.1,
+              }}>
+                {event.venue}
+              </h3>
+              <span style={{
+                fontFamily: 'Nunito, sans-serif', fontSize: 14,
+                color: theme.inkDim, fontWeight: 600,
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+              }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 1c2 0 3.5 1.5 3.5 3.5 0 2.5-3.5 6-3.5 6s-3.5-3.5-3.5-6C2.5 2.5 4 1 6 1z"/><circle cx="6" cy="4.5" r="1.2"/></svg>
+                {event.address}, {event.city}
+              </span>
+            </div>
+            <div style={{
+              display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12,
+              alignItems: 'center',
+            }}>
+              <span style={{
+                fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800,
+                color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase',
+                marginRight: 4,
+              }}>Playing</span>
+              {event.games.map((g) => (
+                <GameBadge key={g} name={g} theme={theme} size="sm" />
+              ))}
+            </div>
+          </div>
+
+          {/* RSVP cluster */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
+            <RsvpButton event={event} state={rsvpState} onToggle={onToggle} theme={theme} />
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              fontFamily: 'Nunito, sans-serif', fontSize: 11, color: theme.inkDim,
+              letterSpacing: '0.02em',
+            }}>
+              <div style={{
+                position: 'relative', width: 72, height: 4, borderRadius: 2,
+                background: theme.line, overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute', inset: 0, width: `${filled * 100}%`,
+                  background: spotsLeft <= 3 ? theme.orange : theme.blue,
+                  transition: 'width .3s',
+                }} />
+              </div>
+              <span style={{ fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                {spotsLeft > 0 ? `${spotsLeft} spots left` : 'Full'}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Expandable address + map preview */}
       {open && (
-        <div style={{
-          padding: '0 28px 28px',
-          display: 'grid', gridTemplateColumns: '110px 1fr auto', gap: 28,
-        }}>
-          <div />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'stretch' }}>
+        isMobile ? (
+          /* ── Mobile expanded section ── */
+          <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Where card */}
             <div style={{
               padding: 16, borderRadius: 10,
               border: `1px solid ${theme.line}`,
@@ -455,7 +551,7 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
                 {event.address}<br />
                 {event.city}
               </div>
-              <div style={{ marginTop: 'auto', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue + ', ' + event.address + ', ' + event.city)}`}
                   target="_blank" rel="noreferrer"
@@ -481,6 +577,7 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
                 >Transit</a>
               </div>
             </div>
+            {/* MiniMap */}
             <MiniMap
               theme={theme}
               venue={event.venue}
@@ -488,23 +585,98 @@ export default function EventRow({ event, rsvpState, onToggle, theme, idx = 0 }:
               city={event.city}
               seed={(event.id?.length ?? 0) + (event.address?.length ?? 0)}
             />
-          </div>
-          <div style={{
-            padding: 16, borderRadius: 10,
-            border: `1px solid ${theme.line}`,
-            background: 'rgba(246,239,228,0.02)',
-            minWidth: 220, maxWidth: 260,
-            fontFamily: 'Nunito, sans-serif',
-          }}>
+            {/* Note from host */}
             <div style={{
-              fontSize: 11, fontWeight: 800, color: theme.inkFaint,
-              letterSpacing: '0.14em', textTransform: 'uppercase',
-            }}>Note from the host</div>
-            <div style={{ fontSize: 13, color: theme.inkDim, marginTop: 8, lineHeight: 1.5 }}>
-              {event.note}
+              padding: 16, borderRadius: 10,
+              border: `1px solid ${theme.line}`,
+              background: 'rgba(246,239,228,0.02)',
+              fontFamily: 'Nunito, sans-serif',
+            }}>
+              <div style={{
+                fontSize: 11, fontWeight: 800, color: theme.inkFaint,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+              }}>Note from the host</div>
+              <div style={{ fontSize: 13, color: theme.inkDim, marginTop: 8, lineHeight: 1.5 }}>
+                {event.note}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          /* ── Desktop expanded section ── */
+          <div style={{
+            padding: '0 28px 28px',
+            display: 'grid', gridTemplateColumns: '110px 1fr auto', gap: 28,
+          }}>
+            <div />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'stretch' }}>
+              <div style={{
+                padding: 16, borderRadius: 10,
+                border: `1px solid ${theme.line}`,
+                background: 'rgba(246,239,228,0.02)',
+                display: 'flex', flexDirection: 'column', gap: 10,
+              }}>
+                <div style={{
+                  fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800,
+                  color: theme.inkFaint, letterSpacing: '0.14em', textTransform: 'uppercase',
+                }}>Where</div>
+                <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 16, color: theme.ink }}>
+                  {event.venue}
+                </div>
+                <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: theme.inkDim, lineHeight: 1.45 }}>
+                  {event.address}<br />
+                  {event.city}
+                </div>
+                <div style={{ marginTop: 'auto', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue + ', ' + event.address + ', ' + event.city)}`}
+                    target="_blank" rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      padding: '8px 12px', borderRadius: 999,
+                      background: theme.blue, color: '#fff', textDecoration: 'none',
+                      fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
+                    }}
+                  >Directions <ArrowRight size={12} color="#fff" /></a>
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.venue + ', ' + event.address + ', ' + event.city)}&travelmode=transit`}
+                    target="_blank" rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      padding: '8px 12px', borderRadius: 999,
+                      background: 'transparent', color: theme.ink, textDecoration: 'none',
+                      border: `1px solid ${theme.lineStrong}`,
+                      fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 700,
+                    }}
+                  >Transit</a>
+                </div>
+              </div>
+              <MiniMap
+                theme={theme}
+                venue={event.venue}
+                address={event.address}
+                city={event.city}
+                seed={(event.id?.length ?? 0) + (event.address?.length ?? 0)}
+              />
+            </div>
+            <div style={{
+              padding: 16, borderRadius: 10,
+              border: `1px solid ${theme.line}`,
+              background: 'rgba(246,239,228,0.02)',
+              minWidth: 220, maxWidth: 260,
+              fontFamily: 'Nunito, sans-serif',
+            }}>
+              <div style={{
+                fontSize: 11, fontWeight: 800, color: theme.inkFaint,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+              }}>Note from the host</div>
+              <div style={{ fontSize: 13, color: theme.inkDim, marginTop: 8, lineHeight: 1.5 }}>
+                {event.note}
+              </div>
+            </div>
+          </div>
+        )
       )}
     </div>
   );

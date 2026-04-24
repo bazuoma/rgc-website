@@ -6,6 +6,7 @@ import EventRow from '../components/EventRow';
 import { ArrowRight } from '../components/Icons';
 import { RGC_EVENTS, RGC_PAST_EVENTS, fmtDate } from '../data/events';
 import Footer from '../components/Footer';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 function FilterChip({ active, children, onClick, accent }: {
   active: boolean;
@@ -38,6 +39,7 @@ export default function EventsPage() {
   const [type, setType] = useState('All');
   const [sort, setSort] = useState('date');
   const [rsvp, setRsvp] = useState<Record<string, 'going' | undefined>>({});
+  const isMobile = useIsMobile();
 
   const onRsvp = (id: string) => setRsvp(prev => ({ ...prev, [id]: prev[id] === 'going' ? undefined : 'going' }));
 
@@ -57,7 +59,7 @@ export default function EventsPage() {
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh' }}>
 
       {/* Page header */}
-      <section style={{ padding: '64px 40px 40px', borderBottom: `1px solid ${theme.line}` }}>
+      <section style={{ padding: isMobile ? '48px 20px 32px' : '64px 40px 40px', borderBottom: `1px solid ${theme.line}` }}>
         <div style={{
           fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
           color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -76,45 +78,56 @@ export default function EventsPage() {
 
       {/* Filters */}
       <section style={{
-        padding: '24px 40px', display: 'flex', gap: 16, flexWrap: 'wrap',
-        alignItems: 'center', borderBottom: `1px solid ${theme.line}`,
-        position: 'sticky', top: 80,
+        padding: isMobile ? '16px 20px' : '24px 40px',
+        overflow: 'hidden',
+        borderBottom: `1px solid ${theme.line}`,
+        position: 'sticky', top: isMobile ? 68 : 80,
         background: `${theme.bg}ee`, backdropFilter: 'blur(12px)', zIndex: 10,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>City</span>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {cities.map(c => (
-              <FilterChip key={c} active={city === c} onClick={() => setCity(c)}>
-                {c === 'All' ? 'All cities' : c.split(',')[0]}
-              </FilterChip>
-            ))}
-          </div>
-        </div>
-        <div style={{ width: 1, height: 24, background: theme.line }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>Type</span>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {types.map(t => {
-              const accent = t === 'Video games' ? theme.blue : t === 'Card games' ? theme.orange : t === 'Board games' ? theme.orange : undefined;
-              return (
-                <FilterChip key={t} active={type === t} onClick={() => setType(t)} accent={accent}>
-                  {t}
+        <div
+          className="rgc-filter-scroll"
+          style={{
+            display: 'flex', gap: 16,
+            alignItems: 'center',
+            flexWrap: isMobile ? 'nowrap' : 'wrap',
+            minWidth: isMobile ? 'max-content' : undefined,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>City</span>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {cities.map(c => (
+                <FilterChip key={c} active={city === c} onClick={() => setCity(c)}>
+                  {c === 'All' ? 'All cities' : c.split(',')[0]}
                 </FilterChip>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-        <div style={{ flex: 1 }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>Sort</span>
-          <FilterChip active={sort === 'date'} onClick={() => setSort('date')}>Soonest</FilterChip>
-          <FilterChip active={sort === 'open'} onClick={() => setSort('open')}>Most seats open</FilterChip>
+          <div style={{ width: 1, height: 24, background: theme.line, flexShrink: 0 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>Type</span>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {types.map(t => {
+                const accent = t === 'Video games' ? theme.blue : t === 'Card games' ? theme.orange : t === 'Board games' ? theme.orange : undefined;
+                return (
+                  <FilterChip key={t} active={type === t} onClick={() => setType(t)} accent={accent}>
+                    {t}
+                  </FilterChip>
+                );
+              })}
+            </div>
+          </div>
+          {!isMobile && <div style={{ flex: 1 }} />}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800, color: theme.inkFaint, letterSpacing: '0.12em', textTransform: 'uppercase' }}>Sort</span>
+            <FilterChip active={sort === 'date'} onClick={() => setSort('date')}>Soonest</FilterChip>
+            <FilterChip active={sort === 'open'} onClick={() => setSort('open')}>Most seats open</FilterChip>
+          </div>
         </div>
       </section>
 
       {/* Upcoming list */}
-      <section style={{ padding: '8px 40px 56px' }}>
+      <section style={{ padding: isMobile ? '8px 20px 48px' : '8px 40px 56px' }}>
         {filtered.length === 0 && (
           <div style={{
             padding: '80px 0', textAlign: 'center',
@@ -129,7 +142,7 @@ export default function EventsPage() {
       </section>
 
       {/* Past events */}
-      <section style={{ padding: '48px 40px 32px', borderTop: `1px solid ${theme.line}` }}>
+      <section style={{ padding: isMobile ? '40px 20px 24px' : '48px 40px 32px', borderTop: `1px solid ${theme.line}` }}>
         <div style={{
           fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
           color: theme.inkFaint, letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -144,7 +157,8 @@ export default function EventsPage() {
         <div style={{ marginTop: 28 }}>
           {RGC_PAST_EVENTS.map((e, i) => (
             <div key={e.id} style={{
-              display: 'grid', gridTemplateColumns: '100px 1fr auto',
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '80px 1fr' : '100px 1fr auto',
               gap: 24, padding: '18px 0',
               borderTop: i === 0 ? `1px solid ${theme.line}` : 'none',
               borderBottom: `1px solid ${theme.line}`,
@@ -161,12 +175,14 @@ export default function EventsPage() {
                   {e.city} · played {e.games.join(', ')}
                 </div>
               </div>
-              <div style={{
-                fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 700,
-                color: theme.inkDim, letterSpacing: '0.04em',
-              }}>
-                {e.attended} showed up
-              </div>
+              {!isMobile && (
+                <div style={{
+                  fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 700,
+                  color: theme.inkDim, letterSpacing: '0.04em',
+                }}>
+                  {e.attended} showed up
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { theme } from '../components/theme';
 import { ArrowRight } from '../components/Icons';
 import Footer from '../components/Footer';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const rules = [
   {
@@ -40,11 +41,12 @@ const rules = [
 
 export default function ConductPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
 
   return (
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh' }}>
       {/* Header */}
-      <section style={{ padding: '72px 40px 40px', borderBottom: `1px solid ${theme.line}` }}>
+      <section style={{ padding: isMobile ? '48px 20px 32px' : '72px 40px 40px', borderBottom: `1px solid ${theme.line}` }}>
         <div style={{
           fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
           color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -70,17 +72,20 @@ export default function ConductPage() {
       </section>
 
       {/* Rules list */}
-      <section style={{ padding: '56px 40px 56px', maxWidth: 1100 }}>
+      <section style={{ padding: isMobile ? '32px 20px 32px' : '56px 40px 56px', maxWidth: 1100 }}>
         <div style={{ display: 'grid', gap: 18 }}>
           {rules.map((r) => (
             <div key={r.n} style={{
-              display: 'grid', gridTemplateColumns: '90px 1fr', gap: 32,
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '48px 1fr' : '90px 1fr',
+              gap: 32,
               padding: '24px 0',
               borderTop: `1px solid ${theme.line}`,
               fontFamily: 'Nunito, sans-serif',
             }}>
               <div style={{
-                fontSize: 28, fontWeight: 900, color: theme.orange,
+                fontSize: isMobile ? 22 : 28,
+                fontWeight: 900, color: theme.orange,
                 letterSpacing: '-0.02em', lineHeight: 1,
               }}>{r.n}</div>
               <div>
@@ -99,13 +104,16 @@ export default function ConductPage() {
       </section>
 
       {/* CTA banner */}
-      <section style={{ padding: '32px 40px 80px' }}>
+      <section style={{ padding: isMobile ? '16px 20px 60px' : '32px 40px 80px' }}>
         <div style={{
           padding: '28px 32px', borderRadius: 14,
           border: `1px solid ${theme.lineStrong}`,
           background: 'rgba(245,158,11,0.05)',
           fontFamily: 'Nunito, sans-serif',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          display: 'flex',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'space-between',
+          flexDirection: isMobile ? 'column' : 'row',
           gap: 24, flexWrap: 'wrap',
         }}>
           <div style={{ maxWidth: 520 }}>

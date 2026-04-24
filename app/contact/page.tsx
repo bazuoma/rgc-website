@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { theme } from '../components/theme';
 import { ArrowRight, CheckIcon } from '../components/Icons';
 import Footer from '../components/Footer';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const topics = ['General', 'A night I attended', 'Report something', 'Press / partnerships'];
 
 export default function ContactPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: '', email: '', topic: 'General', msg: '' });
   const [sent, setSent] = useState(false);
 
@@ -41,7 +43,7 @@ export default function ContactPage() {
   return (
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh' }}>
       {/* Header */}
-      <section style={{ padding: '72px 40px 48px', borderBottom: `1px solid ${theme.line}` }}>
+      <section style={{ padding: isMobile ? '48px 20px 32px' : '72px 40px 48px', borderBottom: `1px solid ${theme.line}` }}>
         <div style={{
           fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
           color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
@@ -60,12 +62,14 @@ export default function ContactPage() {
 
       {/* Two-column layout */}
       <section style={{
-        padding: '56px 40px 80px',
-        display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 56,
+        padding: isMobile ? '40px 20px 60px' : '56px 40px 80px',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1.3fr',
+        gap: 56,
         alignItems: 'flex-start',
       }}>
         {/* Left: info */}
-        <div style={{ position: 'sticky', top: 120, fontFamily: 'Nunito, sans-serif' }}>
+        <div style={{ position: isMobile ? 'static' : 'sticky', top: 120, fontFamily: 'Nunito, sans-serif' }}>
           <div style={{ fontSize: 15, lineHeight: 1.6, color: theme.inkDim, maxWidth: 380 }}>
             A human reads every message. We usually reply within a day or two — faster if it&apos;s
             about something going sideways at a game night.

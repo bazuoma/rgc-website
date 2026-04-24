@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { theme } from '../components/theme';
 import { ArrowRight, CheckIcon } from '../components/Icons';
 import Footer from '../components/Footer';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const interests = ['Board games', 'Card games', 'Video games', 'Teaching new players', 'Bringing a game'];
 
 export default function SignupPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: '', email: '', city: '', interests: [] as string[] });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -113,58 +115,64 @@ export default function SignupPage() {
 
   return (
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh' }}>
-      <section style={{ padding: '64px 40px 80px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.1fr', gap: 64, alignItems: 'flex-start' }}>
-          {/* Left: pitch */}
-          <div style={{ position: 'sticky', top: 120 }}>
-            <div style={{
-              fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
-              color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
-              marginBottom: 20,
-            }}>Join the club</div>
-            <h1 style={{
-              margin: 0,
-              fontFamily: 'Nunito, sans-serif', fontWeight: theme.headingWeight,
-              fontSize: 'clamp(44px, 6vw, 88px)',
-              lineHeight: 0.9, letterSpacing: '-0.03em', color: theme.ink,
-            }}>
-              Find your <span style={{ color: theme.orange, fontStyle: 'italic' }}>people</span>.<br />
-              <span style={{ color: theme.inkDim }}>Roll some dice.</span>
-            </h1>
-            <p style={{
-              marginTop: 24, maxWidth: 440,
-              fontFamily: 'Nunito, sans-serif', fontSize: 17, lineHeight: 1.55,
-              color: theme.inkDim,
-            }}>
-              Real gamers, real tables, real laughs. Leave your week at the door, crack open a game,
-              and walk out with a few new friends who actually remember your name.
-            </p>
-            <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {[
-                { h: 'Meet your neighbors, for real', s: 'Not mutuals. Not matchmaking. Actual humans across the table.' },
-                { h: 'Unplug for a few hours', s: 'Phones face-down. Brains on. Stress off.' },
-                { h: 'Find your regular crew', s: "Show up twice and you'll know half the room." },
-              ].map(t => (
-                <div key={t.h} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                  <div style={{
-                    width: 24, height: 24, borderRadius: 12, background: 'rgba(245,158,11,0.16)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0, marginTop: 2,
-                  }}>
-                    <CheckIcon size={12} color={theme.orange} />
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 15, color: theme.ink, fontWeight: 800, lineHeight: 1.3 }}>
-                      {t.h}
+      <section style={{ padding: isMobile ? '40px 20px 60px' : '64px 40px 80px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1.1fr',
+          gap: 64, alignItems: 'flex-start',
+        }}>
+          {/* Left: pitch — hidden on mobile */}
+          {!isMobile && (
+            <div style={{ position: 'sticky', top: 120 }}>
+              <div style={{
+                fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
+                color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
+                marginBottom: 20,
+              }}>Join the club</div>
+              <h1 style={{
+                margin: 0,
+                fontFamily: 'Nunito, sans-serif', fontWeight: theme.headingWeight,
+                fontSize: 'clamp(44px, 6vw, 88px)',
+                lineHeight: 0.9, letterSpacing: '-0.03em', color: theme.ink,
+              }}>
+                Find your <span style={{ color: theme.orange, fontStyle: 'italic' }}>people</span>.<br />
+                <span style={{ color: theme.inkDim }}>Roll some dice.</span>
+              </h1>
+              <p style={{
+                marginTop: 24, maxWidth: 440,
+                fontFamily: 'Nunito, sans-serif', fontSize: 17, lineHeight: 1.55,
+                color: theme.inkDim,
+              }}>
+                Real gamers, real tables, real laughs. Leave your week at the door, crack open a game,
+                and walk out with a few new friends who actually remember your name.
+              </p>
+              <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {[
+                  { h: 'Meet your neighbors, for real', s: 'Not mutuals. Not matchmaking. Actual humans across the table.' },
+                  { h: 'Unplug for a few hours', s: 'Phones face-down. Brains on. Stress off.' },
+                  { h: 'Find your regular crew', s: "Show up twice and you'll know half the room." },
+                ].map(t => (
+                  <div key={t.h} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{
+                      width: 24, height: 24, borderRadius: 12, background: 'rgba(245,158,11,0.16)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0, marginTop: 2,
+                    }}>
+                      <CheckIcon size={12} color={theme.orange} />
                     </div>
-                    <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: theme.inkDim, fontWeight: 500, marginTop: 3, lineHeight: 1.45 }}>
-                      {t.s}
+                    <div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 15, color: theme.ink, fontWeight: 800, lineHeight: 1.3 }}>
+                        {t.h}
+                      </div>
+                      <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: theme.inkDim, fontWeight: 500, marginTop: 3, lineHeight: 1.45 }}>
+                        {t.s}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Right: form */}
           <form onSubmit={onSubmit} style={{
@@ -172,6 +180,13 @@ export default function SignupPage() {
             border: `1px solid ${theme.lineStrong}`,
             background: 'rgba(246,239,228,0.02)',
           }}>
+            {isMobile && (
+              <div style={{
+                fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
+                color: theme.orange, letterSpacing: '0.18em', textTransform: 'uppercase',
+                marginBottom: 20,
+              }}>Join the club</div>
+            )}
             <div style={{ display: 'grid', gap: 24 }}>
               <div>
                 <label style={labelStyle}>Your name</label>

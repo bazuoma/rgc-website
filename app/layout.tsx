@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="antialiased" style={{ backgroundColor: "#0b0f1e", margin: 0, padding: 0 }}>
         <Navbar />
-        <main style={{ paddingTop: 80 }}>
+        <main className="rgc-main">
           {children}
         </main>
       </body>

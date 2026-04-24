@@ -7,9 +7,11 @@ import EventRow from './components/EventRow';
 import { ArrowRight } from './components/Icons';
 import { RGC_EVENTS, fmtDate } from './data/events';
 import Footer from './components/Footer';
+import { useIsMobile } from './hooks/useIsMobile';
 
 export default function HomePage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const [rsvp, setRsvp] = useState<Record<string, 'going' | undefined>>({});
 
   const onRsvp = (id: string) => setRsvp(prev => ({ ...prev, [id]: prev[id] === 'going' ? undefined : 'going' }));
@@ -20,7 +22,7 @@ export default function HomePage() {
     <div style={{ backgroundColor: theme.bg, minHeight: '100vh' }}>
 
       {/* ── Hero ── */}
-      <section style={{ padding: '88px 40px 72px', position: 'relative' }}>
+      <section style={{ padding: isMobile ? '60px 20px 48px' : '88px 40px 72px', position: 'relative' }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32,
           fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
@@ -53,7 +55,11 @@ export default function HomePage() {
           A club for people who still show up in person. Board games, card games, video games —
           at a real table, with real people, in a real place. No logins. No leaderboards. Just good nights.
         </p>
-        <div style={{ display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap' }}>
+        <div style={{
+          display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : undefined,
+        }}>
           <button onClick={() => router.push('/signup')} style={{
             background: theme.orange, color: '#0d0600',
             border: 'none', borderRadius: 999, padding: '16px 28px',
@@ -75,7 +81,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Upcoming Preview ── */}
-      <section style={{ padding: '48px 40px 24px' }}>
+      <section style={{ padding: isMobile ? '40px 20px 16px' : '48px 40px 24px' }}>
         <div style={{
           display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
           marginBottom: 32, gap: 20, flexWrap: 'wrap',
@@ -110,13 +116,14 @@ export default function HomePage() {
 
       {/* ── CTA Band ── */}
       <section style={{
-        margin: '64px 40px 0',
-        padding: '72px 48px',
+        margin: isMobile ? '48px 20px 0' : '64px 40px 0',
+        padding: isMobile ? '40px 24px' : '72px 48px',
         borderRadius: 24,
         border: `1px solid ${theme.lineStrong}`,
         background: `radial-gradient(1200px 400px at 20% 0%, ${theme.blue}22, transparent), radial-gradient(800px 400px at 90% 100%, ${theme.orange}22, transparent)`,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         gap: 32, flexWrap: 'wrap',
+        flexDirection: isMobile ? 'column' : 'row',
       }}>
         <div>
           <h2 style={{
