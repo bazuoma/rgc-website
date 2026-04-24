@@ -2,67 +2,74 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import RGCLogo from "./RGCLogo";
+import RgcLogo from "./RgcLogo";
+import { theme } from "./theme";
+import { ArrowRight } from "./Icons";
 
-const navLinks = [
-  { href: "/",       label: "Home" },
-  { href: "/events", label: "Events" },
+const items = [
+  { id: 'landing', label: 'Home', href: '/' },
+  { id: 'events', label: 'Events', href: '/events' },
+  { id: 'signup', label: 'Join', href: '/signup' },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 border-b"
-      style={{
-        backgroundColor: "rgba(10,10,15,0.92)",
-        borderColor: "#1e1e35",
-        backdropFilter: "blur(12px)",
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="cursor-pointer">
-          <RGCLogo size={38} />
-        </Link>
-
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 rounded-lg font-sans font-bold text-sm transition-all duration-200 cursor-pointer"
-                style={{
-                  backgroundColor: active ? "#2563eb18" : "transparent",
-                  border:          active ? "1px solid #2563eb" : "1px solid transparent",
-                  color:           active ? "#fff" : "#94a3b8",
-                }}
-                onMouseEnter={(e) => {
-                  if (!active) {
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#fff";
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#ffffff08";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!active) {
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8";
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
-                  }
-                }}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-
+    <nav style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '22px 40px',
+      borderBottom: `1px solid ${theme.line}`,
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 20,
+      background: `${theme.bg}cc`,
+      backdropFilter: 'blur(12px)',
+    }}>
+      <Link href="/" style={{ textDecoration: 'none' }}>
+        <RgcLogo size={36} primary={theme.blueDeep} ring={theme.orange} />
+      </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        {items.map((it) => {
+          const active = pathname === it.href;
+          return (
+            <Link
+              key={it.id}
+              href={it.href}
+              style={{
+                background: 'transparent',
+                color: active ? theme.ink : theme.inkDim,
+                fontFamily: 'Nunito, sans-serif',
+                fontWeight: active ? 800 : 600,
+                fontSize: 14,
+                padding: '10px 14px',
+                letterSpacing: '0.02em',
+                position: 'relative',
+                textDecoration: 'none',
+                display: 'inline-block',
+              }}
+            >
+              {it.label}
+              {active && (
+                <span style={{
+                  position: 'absolute', left: 14, right: 14, bottom: 4, height: 2,
+                  background: theme.orange, borderRadius: 2,
+                }} />
+              )}
+            </Link>
+          );
+        })}
         <Link
           href="/signup"
-          className="btn-primary text-white font-sans font-extrabold text-sm px-5 py-2 rounded-lg"
+          style={{
+            marginLeft: 10,
+            background: theme.orange, color: '#0d0600',
+            border: 'none', borderRadius: 999, padding: '10px 18px',
+            fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13,
+            letterSpacing: '0.02em',
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            textDecoration: 'none',
+          }}
         >
-          Join the Club
+          Join the club <ArrowRight size={14} color="#0d0600" w={2.4} />
         </Link>
       </div>
     </nav>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import RGCLogo from "../components/RGCLogo";
+import RGCLogo from "../components/RgcLogo";
 
 const initialEvents = [
   { id: 1, title: "Strategy Night",  date: "2026-05-03", time: "18:00", location: "The Game Loft, 123 Main St, Downtown", games: ["Catan", "Ticket to Ride", "Pandemic"], spots: 20, rsvps: 12, published: true },

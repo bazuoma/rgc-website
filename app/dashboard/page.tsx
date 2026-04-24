@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import RGCLogo from "../components/RGCLogo";
+import RGCLogo from "../components/RgcLogo";
 
 const memberStats = {
   username: "xXGamerXx",

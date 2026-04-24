@@ -1,195 +1,78 @@
 "use client";
-
 import { useId } from "react";
 
-interface RGCLogoProps {
+interface RgcLogoProps {
   size?: number;
   showText?: boolean;
   className?: string;
+  primary?: string;
+  ring?: string;
 }
 
-export default function RGCLogo({ size = 48, showText = true, className = "" }: RGCLogoProps) {
-  const uid = useId().replace(/:/g, "");
-  const topId = `t${uid}`;
-  const botId = `b${uid}`;
-  const hexClipId = `hc${uid}`;
-
-  // Pre-compute flat-top hexagon points around a center
-  const hexPoints = (cx: number, cy: number, r: number) =>
-    Array.from({ length: 6 }, (_, i) => {
-      const a = (i * 60 * Math.PI) / 180;
-      return `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`;
-    }).join(" ");
+export default function RgcLogo({ size = 40, showText = true, className = "", primary = '#2563EB', ring = '#F59E0B' }: RgcLogoProps) {
+  const uid = useId().replace(/:/g, '');
+  const clipId = `rgc-clip-${uid}`;
+  const orangeDark = '#D97706';
 
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 200 200"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+    <div className={`flex items-center gap-3 ${className}`} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <svg width={size} height={size} viewBox="0 0 100 100" style={{ flexShrink: 0, display: 'block' }}>
         <defs>
-          {/* Top arc: large CW arc from left→right via top of circle r=82 */}
-          <path id={topId} d="M 18,100 A 82,82 0 1,1 182,100" />
-          {/* Bottom arc: small CCW arc from left→right via bottom of circle r=80 */}
-          <path id={botId} d="M 20,100 A 80,80 0 0,0 180,100" />
-          {/* Clip hex pattern to inner circle */}
-          <clipPath id={hexClipId}>
-            <circle cx="100" cy="100" r="67" />
+          <clipPath id={clipId}>
+            <circle cx="50" cy="50" r="46" />
           </clipPath>
         </defs>
-
-        {/* ── Main blue background (outer ring removed — starts here) ── */}
-        <circle cx="100" cy="100" r="92" fill="#2563EB" />
-        {/* Subtle inner highlight ring */}
-        <circle cx="100" cy="100" r="90" fill="none" stroke="#3B82F6" strokeWidth="2" opacity="0.45" />
-
-        {/* ── Orange accent ring ── */}
-        <circle cx="100" cy="100" r="76" fill="none" stroke="#F59E0B" strokeWidth="7" />
-
-        {/* ── Inner dark-blue content circle ── */}
-        <circle cx="100" cy="100" r="68" fill="#1D4ED8" />
-
-        {/* ── Hexagon grid pattern ── */}
-        <g clipPath={`url(#${hexClipId})`} opacity="0.22">
-          {([
-            [100, 54], [122, 54], [78, 54],
-            [111, 73], [89, 73], [133, 73], [67, 73],
-            [100, 92], [122, 92], [78, 92], [144, 92], [56, 92],
-            [111, 111], [89, 111], [133, 111], [67, 111],
-            [100, 130], [122, 130], [78, 130],
-            [111, 149], [89, 149],
-          ] as [number, number][]).map(([cx, cy], i) => (
-            <polygon key={i} points={hexPoints(cx, cy, 11)} fill="none" stroke="white" strokeWidth="1" />
-          ))}
+        {/* Orange ring */}
+        <circle cx="50" cy="50" r="49" fill={ring} />
+        {/* Blue disc inside the ring */}
+        <circle cx="50" cy="50" r="44" fill={primary} />
+        <g clipPath={`url(#${clipId})`}>
+          {/* Hex pattern */}
+          <g fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)" strokeWidth="0.6">
+            <polygon points="50,22 60,28 60,40 50,46 40,40 40,28" />
+            <polygon points="38,44 48,50 48,62 38,68 28,62 28,50" />
+            <polygon points="62,44 72,50 72,62 62,68 52,62 52,50" />
+            <polygon points="50,66 60,72 60,84 50,90 40,84 40,72" />
+          </g>
+          {/* Dice on the left */}
+          <g transform="translate(20 46) rotate(-14)">
+            <rect x="-8" y="-8" width="16" height="16" rx="3" fill="#60A5FA" stroke={orangeDark} strokeWidth="1.2" />
+            <circle cx="-4" cy="-4" r="1.2" fill="#fff" />
+            <circle cx="4" cy="-4" r="1.2" fill="#fff" />
+            <circle cx="0" cy="0" r="1.2" fill="#fff" />
+            <circle cx="-4" cy="4" r="1.2" fill="#fff" />
+            <circle cx="4" cy="4" r="1.2" fill="#fff" />
+          </g>
+          {/* Cards on the right */}
+          <g transform="translate(76 48)">
+            <g transform="rotate(12)">
+              <rect x="-7" y="-10" width="14" height="20" rx="2" fill="#fff" stroke={orangeDark} strokeWidth="1" />
+              <text x="0" y="2" fontFamily="serif" fontSize="10" fontWeight="700" textAnchor="middle" fill="#111">&#9827;</text>
+            </g>
+            <g transform="translate(-4 -1) rotate(-8)">
+              <rect x="-7" y="-10" width="14" height="20" rx="2" fill="#fff" stroke={orangeDark} strokeWidth="1" />
+              <text x="0" y="2" fontFamily="serif" fontSize="10" fontWeight="700" textAnchor="middle" fill="#DC2626">&#9829;</text>
+            </g>
+          </g>
+          {/* Meeple - center, orange */}
+          <g transform="translate(50 54)">
+            <path
+              d="M 0 -20 C -6 -20 -9 -15 -9 -11 C -9 -8.5 -8 -7 -7 -6 C -10 -5.5 -13 -4 -16 -2 C -20 0.5 -22 3.5 -22 6.5 C -22 8.5 -21 10 -18.5 10 L -11 10 L -11 22 C -11 24 -9.5 25 -7.5 25 L 7.5 25 C 9.5 25 11 24 11 22 L 11 10 L 18.5 10 C 21 10 22 8.5 22 6.5 C 22 3.5 20 0.5 16 -2 C 13 -4 10 -5.5 7 -6 C 8 -7 9 -8.5 9 -11 C 9 -15 6 -20 0 -20 Z"
+              fill={ring}
+              stroke={orangeDark}
+              strokeWidth="1"
+              strokeLinejoin="round"
+            />
+          </g>
         </g>
-
-        {/* ── Playing cards — right side, fanned ── */}
-        {([16, 8, 0, -9] as number[]).map((angle, i) => (
-          <rect
-            key={i}
-            x="112" y="63"
-            width="28" height="38"
-            rx="3"
-            fill="white"
-            stroke="#d1d5db"
-            strokeWidth="0.5"
-            transform={`rotate(${angle},126,82)`}
-          />
-        ))}
-        {/* Suit symbols on front card (angle -9°) */}
-        <g transform="rotate(-9,126,82)">
-          <text x="115" y="73"  fontSize="9" fill="#111827" fontFamily="serif" fontWeight="bold">♠</text>
-          <text x="128" y="97"  fontSize="9" fill="#dc2626" fontFamily="serif" fontWeight="bold">♥</text>
-          <text x="115" y="97"  fontSize="9" fill="#111827" fontFamily="serif" fontWeight="bold">♣</text>
-          <text x="126" y="73"  fontSize="6" fill="#dc2626" fontFamily="serif">♦</text>
-        </g>
-
-        {/* ── Dice — left side, 3-D isometric look ── */}
-        <g transform="rotate(-13,70,98)">
-          {/* Front face */}
-          <rect x="52" y="83" width="32" height="32" rx="5" fill="#60A5FA" stroke="#1D4ED8" strokeWidth="2" />
-          {/* Top face */}
-          <polygon points="52,83 61,74 93,74 84,83" fill="#93C5FD" stroke="#1D4ED8" strokeWidth="1.5" />
-          {/* Right face */}
-          <polygon points="84,83 93,74 93,106 84,115" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="1.5" />
-          {/* 5 dots on front */}
-          <circle cx="61" cy="91"  r="2.8" fill="white" />
-          <circle cx="75" cy="91"  r="2.8" fill="white" />
-          <circle cx="68" cy="99"  r="2.8" fill="white" />
-          <circle cx="61" cy="107" r="2.8" fill="white" />
-          <circle cx="75" cy="107" r="2.8" fill="white" />
-          {/* 1 dot on top */}
-          <circle cx="77" cy="79"  r="2.2" fill="white" opacity="0.85" />
-        </g>
-
-        {/* ── Meeple — center, orange ── */}
-        {/* Head */}
-        <circle cx="100" cy="69" r="14" fill="#F59E0B" stroke="#D97706" strokeWidth="2" />
-        {/* Body: shoulders → arms → waist → legs */}
-        <path
-          d="
-            M 91,83
-            L 73,91
-            Q 66,97 70,103
-            L 81,103
-            L 79,112
-            L 76,134
-            L 91,134
-            L 93,118
-            Q 96,115 100,115
-            Q 104,115 107,118
-            L 109,134
-            L 124,134
-            L 121,112
-            L 119,103
-            L 130,103
-            Q 134,97 127,91
-            L 109,83
-            Z
-          "
-          fill="#F59E0B"
-          stroke="#D97706"
-          strokeWidth="2"
-        />
-
-        {/* ── Orange accent dashes at base of orange ring ── */}
-        <path d="M 36,136 A 76,76 0 0,0 50,155" fill="none" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" />
-        <path d="M 164,136 A 76,76 0 0,1 150,155" fill="none" stroke="#F59E0B" strokeWidth="6" strokeLinecap="round" />
-
-        {/* ── Stars ── */}
-        <text x="68"  y="167" fontSize="13" fill="white" textAnchor="middle" dominantBaseline="middle">★</text>
-        <text x="132" y="167" fontSize="13" fill="white" textAnchor="middle" dominantBaseline="middle">★</text>
-
-        {/* ── Small hex corner decorations ── */}
-        {([
-          [48, 170], [58, 176],
-          [152, 170], [142, 176],
-        ] as [number, number][]).map(([cx, cy], i) => (
-          <polygon key={i} points={hexPoints(cx, cy, 6)} fill="none" stroke="white" strokeWidth="1" opacity="0.35" />
-        ))}
-
-        {/* ── Arc text: REAL GAMERS (top) ── */}
-        <text
-          fill="white"
-          fontSize="18"
-          fontWeight="900"
-          fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-          letterSpacing="2"
-        >
-          <textPath href={`#${topId}`} startOffset="50%" textAnchor="middle">
-            REAL GAMERS
-          </textPath>
-        </text>
-
-        {/* ── Arc text: CLUB (bottom) ── */}
-        <text
-          fill="white"
-          fontSize="19"
-          fontWeight="900"
-          fontFamily="'Arial Black', 'Arial Bold', Arial, sans-serif"
-          letterSpacing="6"
-        >
-          <textPath href={`#${botId}`} startOffset="50%" textAnchor="middle">
-            CLUB
-          </textPath>
-        </text>
       </svg>
-
       {showText && (
-        <div>
-          <div
-            className="font-black text-xl leading-none gradient-text"
-            style={{ letterSpacing: "0.08em", fontFamily: "'Nunito', sans-serif" }}
-          >
-            REAL GAMERS
+        <div style={{ textAlign: 'left', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 15, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f6efe4' }}>
+            Real Gamers Club
           </div>
-          <div
-            className="font-extrabold text-xs leading-none"
-            style={{ color: "#f59e0b", letterSpacing: "0.35em", fontFamily: "'Nunito', sans-serif" }}
-          >
-            CLUB
+          <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: 'rgba(246,239,228,0.36)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 3 }}>
+            EST. 2025 · IRL ONLY
           </div>
         </div>
       )}

@@ -4,171 +4,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-primary:    #0d0600;
-  --bg-secondary:  #140900;
-  --bg-card:       #1c0d00;
-  --border:        #2e1800;
-  --blue:          #2563eb;
-  --blue-mid:      #3b82f6;
-  --blue-light:    #60a5fa;
-  --blue-dark:     #1d4ed8;
-  --orange:        #f59e0b;
-  --orange-light:  #fcd34d;
-  --orange-dark:   #d97706;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-* { box-sizing: border-box; }
-
-html { font-family: 'Nunito', sans-serif; }
-
-body {
-  background-color: var(--bg-primary);
-  color: #e2e8f0;
+html, body {
+  background-color: #0d0600;
+  color: #f6efe4;
   font-family: 'Nunito', sans-serif;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, label, td, th, div {
-  font-family: 'Nunito', sans-serif;
-}
-
-/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+::-webkit-scrollbar-track { background: #140a02; }
+::-webkit-scrollbar-thumb { background: #F59E0B; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
 
-/* ── Grid background (disabled — solid bg only) ── */
-.bg-grid {}
-
-/* ── Gradient text ── */
-.gradient-text {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.gradient-text-orange {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.gradient-text-blue-orange {
-  background: linear-gradient(135deg, #2563eb, #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-/* legacy aliases */
-.gradient-text-green { background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.gradient-text-blue  { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-/* ── Neon glows ── */
-.neon-text-blue   { text-shadow: 0 0 10px #2563eb, 0 0 20px #2563eb, 0 0 40px #2563eb80; }
-.neon-text-orange { text-shadow: 0 0 10px #f59e0b, 0 0 20px #f59e0b, 0 0 40px #f59e0b80; }
-/* legacy aliases */
-.neon-text-purple { text-shadow: 0 0 10px #2563eb, 0 0 20px #2563eb, 0 0 40px #2563eb80; }
-.neon-text-cyan   { text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 40px #3b82f680; }
-.neon-text-green  { text-shadow: 0 0 10px #f59e0b, 0 0 20px #f59e0b, 0 0 40px #f59e0b80; }
-
-/* ── Cards ── */
-.card-gaming {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-.card-gaming:hover {
-  border-color: #f59e0b;
-  box-shadow: 0 0 20px #f59e0b18;
+@keyframes rgcPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
 }
 
-/* ── Buttons ── */
-.btn-primary {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  border: 1px solid #3b82f6;
-  box-shadow: 0 0 15px #2563eb40;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.btn-primary:hover {
-  box-shadow: 0 0 28px #2563eb80;
-  transform: translateY(-1px);
+@keyframes rgcConfirmIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #2563eb;
-  color: #60a5fa;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.btn-secondary:hover {
-  background: #2563eb18;
-  box-shadow: 0 0 15px #2563eb40;
-}
-
-.btn-orange {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border: 1px solid #f59e0b;
-  box-shadow: 0 0 15px #f59e0b40;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.btn-orange:hover {
-  box-shadow: 0 0 28px #f59e0b80;
-  transform: translateY(-1px);
-}
-
-/* legacy aliases */
-.btn-blue  { background: linear-gradient(135deg, #2563eb, #1d4ed8); border: 1px solid #3b82f6; box-shadow: 0 0 15px #2563eb40; transition: all 0.2s ease; cursor: pointer; }
-.btn-blue:hover  { box-shadow: 0 0 28px #2563eb80; transform: translateY(-1px); }
-.btn-cyan  { background: linear-gradient(135deg, #2563eb, #1d4ed8); border: 1px solid #3b82f6; box-shadow: 0 0 15px #2563eb40; transition: all 0.2s ease; cursor: pointer; }
-.btn-cyan:hover  { box-shadow: 0 0 28px #2563eb80; transform: translateY(-1px); }
-.btn-green { background: linear-gradient(135deg, #f59e0b, #d97706); border: 1px solid #f59e0b; box-shadow: 0 0 15px #f59e0b40; transition: all 0.2s ease; cursor: pointer; }
-.btn-green:hover { box-shadow: 0 0 28px #f59e0b80; transform: translateY(-1px); }
-.btn-indigo { background: linear-gradient(135deg, #2563eb, #1d4ed8); border: 1px solid #3b82f6; box-shadow: 0 0 15px #2563eb40; transition: all 0.2s ease; cursor: pointer; }
-.btn-indigo:hover { box-shadow: 0 0 28px #2563eb80; transform: translateY(-1px); }
-
-/* ── Progress bars ── */
-.progress-bar {
-  height: 8px;
-  background: var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
-
-/* ── Badges ── */
-.badge-blue {
-  background: #2563eb20;
-  border: 1px solid #2563eb50;
-  color: #93c5fd;
-  font-size: 0.7rem;
-  padding: 2px 9px;
-  border-radius: 9999px;
-  font-weight: 700;
-}
-.badge-orange {
-  background: #f59e0b20;
-  border: 1px solid #f59e0b50;
-  color: #fcd34d;
-  font-size: 0.7rem;
-  padding: 2px 9px;
-  border-radius: 9999px;
-  font-weight: 700;
-}
-/* legacy aliases */
-.badge-purple { background: #2563eb20; border: 1px solid #2563eb50; color: #93c5fd; font-size: 0.7rem; padding: 2px 9px; border-radius: 9999px; font-weight: 700; }
-.badge-cyan   { background: #2563eb20; border: 1px solid #2563eb50; color: #93c5fd; font-size: 0.7rem; padding: 2px 9px; border-radius: 9999px; font-weight: 700; }
-.badge-green  { background: #f59e0b20; border: 1px solid #f59e0b50; color: #fcd34d; font-size: 0.7rem; padding: 2px 9px; border-radius: 9999px; font-weight: 700; }
-.badge-indigo { background: #2563eb20; border: 1px solid #2563eb50; color: #93c5fd; font-size: 0.7rem; padding: 2px 9px; border-radius: 9999px; font-weight: 700; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
