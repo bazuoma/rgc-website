@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { theme } from './components/theme';
 import EventRow from './components/EventRow';
-import { ArrowRight, MeepleIcon, DiceIcon } from './components/Icons';
+import { ArrowRight } from './components/Icons';
 import { RGC_EVENTS, fmtDate } from './data/events';
 import Footer from './components/Footer';
 
@@ -71,44 +71,6 @@ export default function HomePage() {
           }}>
             See upcoming nights
           </button>
-        </div>
-      </section>
-
-      {/* ── Feature Cards ── */}
-      <section style={{ padding: '24px 40px 64px' }}>
-        <div style={{
-          display: 'flex', flexWrap: 'wrap',
-          border: `1px solid ${theme.line}`, borderRadius: 14,
-          background: 'rgba(246,239,228,0.015)',
-          overflow: 'hidden',
-        }}>
-          {[
-            { icon: <MeepleIcon size={20} color={theme.orange} />, label: 'In-person only', body: 'No Discord. No matchmaking. Just real tables and real chairs.' },
-            { icon: <DiceIcon size={20} color={theme.blue} pips={6} />, label: 'Any game, any night', body: 'Board, card, or video — whatever the host brings. New players welcome.' },
-          ].map((it, i) => (
-            <div key={it.label} style={{
-              flex: '1 1 320px', minWidth: 260,
-              padding: '22px 26px',
-              display: 'flex', alignItems: 'center', gap: 16,
-              borderLeft: i > 0 ? `1px solid ${theme.line}` : 'none',
-              fontFamily: 'Nunito, sans-serif',
-            }}>
-              <div style={{
-                flexShrink: 0, width: 36, height: 36, borderRadius: 999,
-                background: 'rgba(246,239,228,0.05)', border: `1px solid ${theme.line}`,
-                display: 'grid', placeItems: 'center',
-              }}>{it.icon}</div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{
-                  fontSize: 11, fontWeight: 800, color: theme.orange,
-                  letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 3,
-                }}>{it.label}</div>
-                <div style={{ fontSize: 14, color: theme.inkDim, fontWeight: 500, lineHeight: 1.45 }}>
-                  {it.body}
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 

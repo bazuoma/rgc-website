@@ -1,9 +1,11 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
 import RgcLogo from "./RgcLogo";
 import { theme } from "./theme";
 
 export default function Footer() {
+  const router = useRouter();
   const linkStyle: React.CSSProperties = {
     color: theme.inkDim, textDecoration: 'none', cursor: 'pointer',
     fontFamily: 'Nunito, sans-serif', fontWeight: 600,
@@ -65,8 +67,8 @@ export default function Footer() {
         <span style={{ fontSize: 12, color: theme.inkFaint, fontFamily: 'Nunito, sans-serif' }}>@realgamers.club</span>
       </div>
       <div style={{ display: 'flex', gap: 28, fontSize: 13 }}>
-        <span style={linkStyle}>Code of conduct</span>
-        <span style={linkStyle}>Contact</span>
+        <span style={{ ...linkStyle, cursor: 'pointer' }} onClick={() => router.push('/conduct')}>Code of conduct</span>
+        <span style={{ ...linkStyle, cursor: 'pointer' }} onClick={() => router.push('/contact')}>Contact</span>
       </div>
       <div style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: theme.inkFaint }}>
         © 2026 · No bots. No logins. Just people.
