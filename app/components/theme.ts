@@ -1,6 +1,6 @@
 export const theme = {
-  bg: '#0d0600',
-  bgWarm: '#140a02',
+  bg: '#0b0f1e',
+  bgWarm: '#0d1224',
   ink: '#f6efe4',
   inkDim: 'rgba(246,239,228,0.66)',
   inkFaint: 'rgba(246,239,228,0.36)',
