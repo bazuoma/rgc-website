@@ -6,62 +6,50 @@ import Link from "next/link";
 const upcomingEvents = [
   {
     id: 1,
-    title: "Strategy Night",
     date:  "May 3, 2026",
     time:  "6:00 PM – 10:00 PM",
     location: "The Game Loft, 123 Main St, Downtown",
     games: ["Catan", "Ticket to Ride", "Pandemic", "Terraforming Mars"],
     spots: 8, totalSpots: 20,
-    color: "#8b5cf6",
-    host: "Admin Marcus",
-    description: "Break out the euros and settle some disputes. Heavy strategy games, light snacks, maximum brain power.",
+    color: "#2563eb",
     rsvpd: false,
   },
   {
     id: 2,
-    title: "Card Game Clash",
     date:  "May 17, 2026",
     time:  "7:00 PM – 11:00 PM",
     location: "Brew & Board, 456 Oak Ave, Midtown",
     games: ["Magic: The Gathering", "Exploding Kittens", "UNO Flip", "Sushi Go"],
     spots: 12, totalSpots: 24,
-    color: "#3b82f6",
-    host: "Admin Priya",
-    description: "From casual UNO chaos to serious MTG duels. All levels welcome. Bring your deck or use house cards.",
+    color: "#f59e0b",
     rsvpd: true,
   },
   {
     id: 3,
-    title: "Console Wars",
     date:  "May 31, 2026",
     time:  "5:00 PM – 11:00 PM",
     location: "GameZone Hub, 789 Game Blvd, Eastside",
     games: ["Super Smash Bros Ultimate", "Mario Kart 8 Deluxe", "Rocket League", "Fall Guys"],
     spots: 16, totalSpots: 32,
-    color: "#7c3aed",
-    host: "Admin DeShawn",
-    description: "Our flagship console event. 4 setups, round-robin brackets, prizes for top finishers. Come ready to compete.",
+    color: "#3b82f6",
     rsvpd: false,
   },
   {
     id: 4,
-    title: "Tabletop RPG Night",
     date:  "June 14, 2026",
     time:  "6:00 PM – midnight",
     location: "The Game Loft, 123 Main St, Downtown",
     games: ["Dungeons & Dragons", "Pathfinder 2e", "Blades in the Dark"],
     spots: 6, totalSpots: 12,
-    color: "#93c5fd",
-    host: "Admin Layla",
-    description: "Grab your dice and your character sheet. One-shot adventures for new and experienced players alike.",
+    color: "#60a5fa",
     rsvpd: false,
   },
 ];
 
 const pastEvents = [
-  { id: 101, title: "April Board Game Bonanza", date: "Apr 5, 2026",  attendees: 22, topWinner: "xXGamerXx",    games: ["Wingspan", "Azul", "Codenames"] },
-  { id: 102, title: "March Madness Card Night", date: "Mar 22, 2026", attendees: 18, topWinner: "D3ShawnGames", games: ["Poker", "Magic: The Gathering", "Phase 10"] },
-  { id: 103, title: "February Fighting Fest",   date: "Feb 15, 2026", attendees: 30, topWinner: "PixelPriya",   games: ["Street Fighter 6", "Tekken 8", "Mortal Kombat 1"] },
+  { id: 101, date: "Apr 5, 2026",  location: "The Game Loft, Downtown",   attendees: 22, games: ["Wingspan", "Azul", "Codenames"] },
+  { id: 102, date: "Mar 22, 2026", location: "Brew & Board, Midtown",     attendees: 18, games: ["Poker", "Magic: The Gathering", "Phase 10"] },
+  { id: 103, date: "Feb 15, 2026", location: "GameZone Hub, Eastside",    attendees: 30, games: ["Street Fighter 6", "Tekken 8", "Mortal Kombat 1"] },
 ];
 
 export default function EventsPage() {
@@ -73,7 +61,7 @@ export default function EventsPage() {
     setRsvpStates((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <div className="min-h-screen bg-grid py-12 px-6" style={{ backgroundColor: "#0a0a0f" }}>
+    <div className="min-h-screen bg-grid py-12 px-6" style={{ backgroundColor: "#0d0600" }}>
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -89,7 +77,7 @@ export default function EventsPage() {
 
         {/* Upcoming */}
         <section className="mb-16">
-          <h2 className="font-extrabold text-sm mb-6" style={{ color: "#3b82f6", letterSpacing: "0.2em" }}>UPCOMING GAME NIGHTS</h2>
+          <h2 className="font-extrabold text-sm mb-6" style={{ color: "#f59e0b", letterSpacing: "0.2em" }}>UPCOMING GAME NIGHTS</h2>
           <div className="space-y-6">
             {upcomingEvents.map((event) => {
               const isRsvpd = rsvpStates[event.id];
@@ -99,9 +87,9 @@ export default function EventsPage() {
               return (
                 <div
                   key={event.id}
-                  className="card-gaming p-6 cursor-pointer"
+                  className="card-gaming p-6"
                   style={{
-                    borderColor: isRsvpd ? `${event.color}60` : "#1e1e35",
+                    borderColor: isRsvpd ? `${event.color}60` : "#2e1800",
                     boxShadow:   isRsvpd ? `0 0 20px ${event.color}15` : "none",
                   }}
                 >
@@ -117,30 +105,27 @@ export default function EventsPage() {
 
                     {/* Content */}
                     <div className="flex-1">
-                      <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
+                      <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                        {/* Location as primary heading */}
                         <div>
-                          <h3 className="font-black text-2xl text-white">{event.title}</h3>
-                          <div className="font-sans text-xs text-slate-500 mt-0.5">Hosted by {event.host}</div>
+                          <div className="flex items-center gap-2">
+                            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={event.color} strokeWidth={2} viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                            <h3 className="font-black text-xl text-white">{event.location}</h3>
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-1 ml-6 text-slate-400 text-sm font-sans">
+                            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            {event.time}
+                          </div>
                         </div>
                         {isRsvpd && <span className="badge-blue" style={{ fontSize: "0.75rem" }}>YOU&apos;RE IN</span>}
                       </div>
 
-                      <p className="text-slate-400 text-sm leading-relaxed mb-4 font-sans">{event.description}</p>
-
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        {[
-                          { icon: "M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z", text: event.time },
-                          { icon: "M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z", text: event.location },
-                        ].map(({ icon, text }) => (
-                          <div key={text} className="flex items-center gap-2 text-slate-400 text-sm font-sans">
-                            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
-                            </svg>
-                            {text}
-                          </div>
-                        ))}
-                      </div>
-
+                      {/* Games */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         {event.games.map((g) => <span key={g} className="badge-blue">{g}</span>)}
                       </div>
@@ -174,35 +159,33 @@ export default function EventsPage() {
 
         {/* Past Events */}
         <section>
-          <h2 className="font-extrabold text-sm mb-6" style={{ color: "#8b5cf6", letterSpacing: "0.2em" }}>PAST EVENTS</h2>
+          <h2 className="font-extrabold text-sm mb-6" style={{ color: "#2563eb", letterSpacing: "0.2em" }}>PAST EVENTS</h2>
           <div className="space-y-3">
             {pastEvents.map((event) => (
               <div key={event.id} className="card-gaming p-5 flex flex-col md:flex-row md:items-center gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-bold text-white font-sans">{event.title}</h3>
-                    <span className="badge-purple">{event.date}</span>
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="#f59e0b" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
+                    <h3 className="font-bold text-white font-sans">{event.location}</h3>
+                    <span className="badge-orange">{event.date}</span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 ml-6">
                     {event.games.map((g) => <span key={g} className="text-slate-500 font-sans text-xs">{g}</span>)}
                   </div>
                 </div>
-                <div className="flex items-center gap-6 text-sm">
-                  <div className="text-center">
-                    <div className="font-black text-white" style={{ fontFamily: "'Nunito', sans-serif" }}>{event.attendees}</div>
-                    <div className="font-sans text-xs text-slate-500">attended</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-bold font-sans" style={{ color: "#8b5cf6" }}>{event.topWinner}</div>
-                    <div className="font-sans text-xs text-slate-500">top winner</div>
-                  </div>
+                <div className="text-center">
+                  <div className="font-black text-white" style={{ fontFamily: "'Nunito', sans-serif" }}>{event.attendees}</div>
+                  <div className="font-sans text-xs text-slate-500">attended</div>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-slate-600 font-sans text-sm mb-4">Not a member yet?</p>
+            <p className="text-slate-600 font-sans text-sm mb-4">Not on the list yet?</p>
             <Link href="/signup" className="btn-primary text-white font-sans font-extrabold px-8 py-3 rounded-xl inline-block">Join to RSVP Events</Link>
           </div>
         </section>
