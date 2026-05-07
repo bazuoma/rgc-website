@@ -52,8 +52,10 @@ export default function HomePage() {
           fontFamily: 'Nunito, sans-serif', fontSize: 19, lineHeight: 1.5,
           color: theme.inkDim, fontWeight: 500,
         }}>
-          A club for people who still show up in person. Board games, card games, video games —
-          at a real table, with real people, in a real place. No logins. No leaderboards. Just good nights.
+          Real Gamers Club is a social community built around a simple idea: the best connections
+          happen face to face. We host game nights at bars across LA — board games, card games,
+          tabletop strategy — but the games are just the excuse. The real point is the people
+          around the table.
         </p>
         <div style={{
           display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap',
@@ -77,6 +79,45 @@ export default function HomePage() {
           }}>
             See upcoming nights
           </button>
+        </div>
+      </section>
+
+      {/* ── Community Pillars ── */}
+      <section style={{ padding: isMobile ? '0 20px 48px' : '0 40px 64px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? 0 : 40,
+        }}>
+          {[
+            {
+              title: 'Real people. Real friendships.',
+              body: "No usernames. No avatars. Just strangers who become regulars and regulars who become friends. The kind of community you can't build in a group chat.",
+            },
+            {
+              title: 'Show up once. Belong immediately.',
+              body: "Walk in alone, leave with a crew. We're the kind of club where showing up twice means you're already a regular. Everyone gets a name tag for a reason.",
+            },
+            {
+              title: 'Games are the glue.',
+              body: "Board games, card games, tabletop strategy — rotating each night, taught on the spot. No experience needed. Just bring yourself.",
+            },
+          ].map((p) => (
+            <div key={p.title} style={{
+              padding: isMobile ? '24px 0' : '28px 0',
+              borderTop: `2px solid ${theme.orange}`,
+              fontFamily: 'Nunito, sans-serif',
+            }}>
+              <h3 style={{
+                margin: 0, fontSize: 19, fontWeight: 900,
+                color: theme.ink, letterSpacing: '-0.01em', lineHeight: 1.2,
+              }}>{p.title}</h3>
+              <p style={{
+                margin: '10px 0 0', fontSize: 15,
+                color: theme.inkDim, lineHeight: 1.6, fontWeight: 500,
+              }}>{p.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -131,13 +172,14 @@ export default function HomePage() {
             fontSize: 'clamp(32px, 4vw, 56px)', color: theme.ink,
             letterSpacing: '-0.025em', lineHeight: 1, maxWidth: 640,
           }}>
-            You don&apos;t need to be good. You just need to come.
+            The best friendships start at a table.
           </h2>
           <p style={{
             marginTop: 18, fontFamily: 'Nunito, sans-serif', fontSize: 16,
             color: theme.inkDim, maxWidth: 520, lineHeight: 1.5,
           }}>
-            Drop your email, we&apos;ll tell you when the next night is. No spam. No newsletters about newsletters.
+            We host game nights across LA for people who want real community — not another group chat.
+            Drop your email and we&apos;ll let you know when the next night is. No spam. Ever.
           </p>
         </div>
         <button onClick={() => router.push('/signup')} style={{
