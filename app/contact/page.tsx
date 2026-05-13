@@ -39,6 +39,7 @@ function ContactForm() {
           email: form.email,
           name: form.name,
           topic: form.topic,
+          msg: form.msg,
           formType: 'contact',
         }),
       });

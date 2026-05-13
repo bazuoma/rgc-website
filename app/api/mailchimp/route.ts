@@ -7,7 +7,7 @@ const SERVER = process.env.MAILCHIMP_SERVER!;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, name, city, topic, interests, formType } = body;
+    const { email, name, city, topic, msg, interests, formType } = body;
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -22,6 +22,10 @@ export async function POST(req: NextRequest) {
     if (firstName) mergeFields['FNAME'] = firstName;
     if (lastName) mergeFields['LNAME'] = lastName;
     if (city) mergeFields['CITY'] = city;
+    // Merge tag for the "Additional Information" custom field in Mailchimp.
+    // Find yours: Audience → Settings → Audience fields and *|MERGE|* tags
+    const msgMergeTag = process.env.MAILCHIMP_MSG_FIELD || 'MOREINFO';
+    if (msg) mergeFields[msgMergeTag] = msg;
 
     // Build tags
     const tags: string[] = [formType === 'contact' ? 'contact-form' : 'signup-form'];

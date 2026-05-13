@@ -9,10 +9,10 @@ import { ArrowRight } from "./Icons";
 import { useIsMobile } from "../hooks/useIsMobile";
 
 const items = [
-  { id: 'landing', label: 'Home', href: '/' },
-  { id: 'events', label: 'Events', href: '/events' },
-  { id: 'playtesting', label: 'Test a game', href: '/contact?topic=Game+testing' },
-  { id: 'signup', label: 'Join', href: '/signup' },
+  { id: 'landing', label: 'Home', href: '/', basePath: '/' },
+  { id: 'events', label: 'Events', href: '/events', basePath: '/events' },
+  { id: 'playtesting', label: 'Test a game', href: '/contact?topic=Game+testing', basePath: '/contact' },
+  { id: 'signup', label: 'Join', href: '/signup', basePath: '/signup' },
 ];
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -70,7 +70,7 @@ export default function Navbar() {
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {items.map((it) => {
-              const active = pathname === it.href;
+              const active = pathname === it.basePath;
               return (
                 <Link
                   key={it.id}
