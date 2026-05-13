@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { theme } from './components/theme';
 import EventRow from './components/EventRow';
@@ -12,10 +11,6 @@ import { useIsMobile } from './hooks/useIsMobile';
 export default function HomePage() {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const [rsvp, setRsvp] = useState<Record<string, 'going' | undefined>>({});
-
-  const onRsvp = (id: string) => setRsvp(prev => ({ ...prev, [id]: prev[id] === 'going' ? undefined : 'going' }));
-
   const nextEvent = RGC_EVENTS[0];
 
   return (
@@ -204,7 +199,7 @@ export default function HomePage() {
         </div>
         <div>
           {RGC_EVENTS.slice(0, 3).map((e, i) => (
-            <EventRow key={e.id} event={e} idx={i} rsvpState={rsvp[e.id]} onToggle={onRsvp} theme={theme} />
+            <EventRow key={e.id} event={e} idx={i} theme={theme} />
           ))}
         </div>
       </section>

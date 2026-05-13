@@ -38,10 +38,7 @@ export default function EventsPage() {
   const [city, setCity] = useState('All');
   const [type, setType] = useState('All');
   const [sort, setSort] = useState('date');
-  const [rsvp, setRsvp] = useState<Record<string, 'going' | undefined>>({});
   const isMobile = useIsMobile();
-
-  const onRsvp = (id: string) => setRsvp(prev => ({ ...prev, [id]: prev[id] === 'going' ? undefined : 'going' }));
 
   const cities = ['All', ...Array.from(new Set(RGC_EVENTS.map(e => e.city)))];
   const types = ['All', 'Board games', 'Card games', 'Video games'];
@@ -137,7 +134,7 @@ export default function EventsPage() {
           </div>
         )}
         {filtered.map((e, i) => (
-          <EventRow key={e.id} event={e} idx={i} rsvpState={rsvp[e.id]} onToggle={onRsvp} theme={theme} />
+          <EventRow key={e.id} event={e} idx={i} theme={theme} />
         ))}
       </section>
 
