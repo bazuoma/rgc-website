@@ -121,6 +121,60 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Game Testing Callout ── */}
+      <section style={{ padding: isMobile ? '0 20px 48px' : '0 40px 64px' }}>
+        <div style={{
+          padding: isMobile ? '28px 24px' : '36px 44px',
+          borderRadius: 16,
+          border: `1px solid ${theme.lineStrong}`,
+          background: 'rgba(30,58,138,0.12)',
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'space-between',
+          gap: 28,
+        }}>
+          <div style={{ maxWidth: 600 }}>
+            <div style={{
+              fontFamily: 'Nunito, sans-serif', fontSize: 11, fontWeight: 800,
+              color: theme.blue, letterSpacing: '0.18em', textTransform: 'uppercase',
+              marginBottom: 10,
+            }}>For game publishers & designers</div>
+            <h2 style={{
+              margin: 0, fontFamily: 'Nunito, sans-serif', fontWeight: 900,
+              fontSize: isMobile ? 22 : 26, color: theme.ink,
+              letterSpacing: '-0.015em', lineHeight: 1.2,
+            }}>
+              Got a game that needs real players to test it?
+            </h2>
+            <p style={{
+              margin: '10px 0 0', fontFamily: 'Nunito, sans-serif', fontSize: 15,
+              color: theme.inkDim, lineHeight: 1.55, fontWeight: 500,
+            }}>
+              We host structured game nights with engaged, honest players across LA.
+              If you&apos;re developing a board game or card game, we&apos;ll put it on the table
+              and give you the kind of feedback you can only get from a real room.
+            </p>
+          </div>
+          <a
+            href="/contact?topic=Game+testing"
+            style={{
+              flexShrink: 0,
+              background: 'transparent', color: theme.ink,
+              border: `1.5px solid ${theme.lineStrong}`, borderRadius: 999,
+              padding: '12px 22px',
+              fontFamily: 'Nunito, sans-serif', fontWeight: 800, fontSize: 13,
+              letterSpacing: '0.02em', cursor: 'pointer',
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Get in touch <ArrowRight size={13} color={theme.ink} w={2.2} />
+          </a>
+        </div>
+      </section>
+
       {/* ── Upcoming Preview ── */}
       <section style={{ padding: isMobile ? '40px 20px 16px' : '48px 40px 24px' }}>
         <div style={{

@@ -11,6 +11,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 const items = [
   { id: 'landing', label: 'Home', href: '/' },
   { id: 'events', label: 'Events', href: '/events' },
+  { id: 'playtesting', label: 'Test a game', href: '/contact?topic=Game+testing' },
   { id: 'signup', label: 'Join', href: '/signup' },
 ];
 

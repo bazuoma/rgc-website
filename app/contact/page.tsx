@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { theme } from '../components/theme';
 import { ArrowRight, CheckIcon } from '../components/Icons';
 import Footer from '../components/Footer';
 import { useIsMobile } from '../hooks/useIsMobile';
 
-const topics = ['General', 'A night I attended', 'Report something', 'Press / partnerships'];
+const topics = ['General', 'A night I attended', 'Report something', 'Press / partnerships', 'Game testing'];
 
 export default function ContactPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: '', email: '', topic: 'General', msg: '' });
+
+  useEffect(() => {
+    const topicParam = searchParams.get('topic');
+    if (topicParam && topics.includes(topicParam)) {
+      setForm(f => ({ ...f, topic: topicParam }));
+    }
+  }, [searchParams]);
   const [sent, setSent] = useState(false);
 
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);

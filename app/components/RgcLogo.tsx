@@ -9,7 +9,7 @@ interface RgcLogoProps {
   ring?: string;
 }
 
-export default function RgcLogo({ size = 40, showText = true, className = "", primary = '#2563EB', ring = '#F59E0B' }: RgcLogoProps) {
+export default function RgcLogo({ size = 40, showText = true, className = "", primary = '#1E3A8A', ring = '#F59E0B' }: RgcLogoProps) {
   const uid = useId().replace(/:/g, '');
   const clipId = `rgc-clip-${uid}`;
   const orangeDark = '#D97706';
@@ -36,12 +36,12 @@ export default function RgcLogo({ size = 40, showText = true, className = "", pr
           </g>
           {/* Dice on the left */}
           <g transform="translate(20 46) rotate(-14)">
-            <rect x="-8" y="-8" width="16" height="16" rx="3" fill="#60A5FA" stroke={orangeDark} strokeWidth="1.2" />
-            <circle cx="-4" cy="-4" r="1.2" fill="#fff" />
-            <circle cx="4" cy="-4" r="1.2" fill="#fff" />
-            <circle cx="0" cy="0" r="1.2" fill="#fff" />
-            <circle cx="-4" cy="4" r="1.2" fill="#fff" />
-            <circle cx="4" cy="4" r="1.2" fill="#fff" />
+            <rect x="-8" y="-8" width="16" height="16" rx="3" fill="#ffffff" stroke={orangeDark} strokeWidth="1.2" />
+            <circle cx="-4" cy="-4" r="1.2" fill="#DC2626" />
+            <circle cx="4" cy="-4" r="1.2" fill="#DC2626" />
+            <circle cx="0" cy="0" r="1.2" fill="#DC2626" />
+            <circle cx="-4" cy="4" r="1.2" fill="#DC2626" />
+            <circle cx="4" cy="4" r="1.2" fill="#DC2626" />
           </g>
           {/* Cards on the right */}
           <g transform="translate(76 48)">

@@ -22,7 +22,7 @@ export default function Icon() {
           width: 26,
           height: 26,
           borderRadius: 13,
-          background: '#2563EB',
+          background: '#1E3A8A',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
