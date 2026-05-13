@@ -21,12 +21,7 @@ export interface RgcPastEvent {
 }
 
 export const RGC_EVENTS: RgcEvent[] = [
-  { id: 'apr-26', date: new Date(2026, 3, 26, 19, 0), venue: 'Brewport', city: 'El Segundo, CA', address: '500 Main St', games: ['Catan', 'Codenames', 'Splendor'], type: 'Board games', capacity: 24, rsvp: 17, note: 'House IPA is on tap. Bring your own meeple.' },
-  { id: 'may-03', date: new Date(2026, 4, 3, 18, 30), venue: '33 Taps', city: 'Culver City, CA', address: '3725 Main St', games: ['Smash Bros.', 'Mario Kart', 'Jackbox'], type: 'Video games', capacity: 32, rsvp: 28, note: 'Projector + two TVs. Tournament bracket optional.' },
-  { id: 'may-10', date: new Date(2026, 4, 10, 19, 0), venue: 'Brewport', city: 'El Segundo, CA', address: '500 Main St', games: ['Wingspan', 'Azul', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 9, note: 'Lighter rules night — easy to jump in.' },
-  { id: 'may-17', date: new Date(2026, 4, 17, 18, 0), venue: 'The Bungalow', city: 'Santa Monica, CA', address: '101 Wilshire Blvd', games: ['Poker', 'Codenames', 'Uno'], type: 'Card games', capacity: 20, rsvp: 14, note: 'Cash-light poker. $5 buy-in for fun, not stakes.' },
-  { id: 'may-24', date: new Date(2026, 4, 24, 19, 30), venue: '33 Taps', city: 'Culver City, CA', address: '3725 Main St', games: ['Rocket League', 'Smash Bros.'], type: 'Video games', capacity: 28, rsvp: 22, note: '2v2 Rocket League league night. Solo queuers welcome.' },
-  { id: 'may-31', date: new Date(2026, 4, 31, 18, 30), venue: 'Brewport', city: 'El Segundo, CA', address: '500 Main St', games: ['Terraforming Mars', 'Scythe', '7 Wonders'], type: 'Board games', capacity: 20, rsvp: 11, note: 'Heavy games night. Expect 2–3 hour sessions.' },
+  { id: 'may-27', date: new Date(2026, 4, 27, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', address: '137 Nevada St', games: ['Catan', 'Codenames', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 0, note: 'Our first official night. Come early, grab a pint, meet the crew.' },
 ];
 
 export const RGC_PAST_EVENTS: RgcPastEvent[] = [

@@ -22,13 +22,30 @@ function ContactForm() {
     }
   }, [searchParams]);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
   const ok = form.name.trim().length > 0 && validEmail && form.msg.trim().length >= 10;
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ok) return;
+    if (!ok || submitting) return;
+    setSubmitting(true);
+    try {
+      await fetch('/api/mailchimp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          name: form.name,
+          topic: form.topic,
+          formType: 'contact',
+        }),
+      });
+    } catch (_) {
+      // Silent — don't block the UX if Mailchimp is down
+    }
+    setSubmitting(false);
     setSent(true);
   };
 
@@ -89,7 +106,7 @@ function ContactForm() {
                 letterSpacing: '0.14em', textTransform: 'uppercase',
               }}>Email</div>
               <div style={{ fontSize: 16, fontWeight: 700, color: theme.ink, marginTop: 4 }}>
-                hello@realgamers.club
+                hq@realgamers.club
               </div>
             </div>
             <div>
@@ -98,7 +115,7 @@ function ContactForm() {
                 letterSpacing: '0.14em', textTransform: 'uppercase',
               }}>Reports &amp; safety</div>
               <div style={{ fontSize: 16, fontWeight: 700, color: theme.ink, marginTop: 4 }}>
-                trust@realgamers.club
+                hq@realgamers.club
               </div>
             </div>
             <div>
@@ -242,17 +259,17 @@ function ContactForm() {
 
               <button
                 type="submit"
-                disabled={!ok}
+                disabled={!ok || submitting}
                 style={{
                   background: theme.orange, color: '#0d0600',
                   border: 'none', borderRadius: 999, padding: '14px 24px',
                   fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 14,
-                  letterSpacing: '0.04em', cursor: ok ? 'pointer' : 'not-allowed',
+                  letterSpacing: '0.04em', cursor: ok && !submitting ? 'pointer' : 'not-allowed',
                   display: 'inline-flex', alignItems: 'center', gap: 10,
-                  opacity: ok ? 1 : 0.5,
+                  opacity: ok && !submitting ? 1 : 0.5,
                 }}
               >
-                Send it <ArrowRight size={14} color="#0d0600" w={2.4} />
+                {submitting ? 'Sending…' : <>Send it <ArrowRight size={14} color="#0d0600" w={2.4} /></>}
               </button>
             </>
           )}

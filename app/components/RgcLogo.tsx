@@ -72,7 +72,7 @@ export default function RgcLogo({ size = 40, showText = true, className = "", pr
             Real Gamers Club
           </div>
           <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 11, color: 'rgba(246,239,228,0.36)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 3 }}>
-            EST. 2025 · IRL ONLY
+            EST. 2026 · IRL ONLY
           </div>
         </div>
       )}

@@ -15,6 +15,7 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', email: '', city: '', interests: [] as string[] });
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const errors: Record<string, string> = {};
   if (!form.name.trim()) errors.name = 'We need something to call you.';
@@ -30,10 +31,27 @@ export default function SignupPage() {
     }));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({ name: true, email: true, city: true });
-    if (!canSubmit) return;
+    if (!canSubmit || submitting) return;
+    setSubmitting(true);
+    try {
+      await fetch('/api/mailchimp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          name: form.name,
+          city: form.city,
+          interests: form.interests,
+          formType: 'signup',
+        }),
+      });
+    } catch (_) {
+      // Silent — don't block the UX if Mailchimp is down
+    }
+    setSubmitting(false);
     setSubmitted(true);
   };
 
@@ -268,17 +286,18 @@ export default function SignupPage() {
 
               <button
                 type="submit"
-                disabled={!canSubmit && Object.keys(touched).length > 0}
+                disabled={submitting || (!canSubmit && Object.keys(touched).length > 0)}
                 style={{
                   background: theme.orange, color: '#0d0600',
                   border: 'none', borderRadius: 999, padding: '18px 28px',
                   fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 15,
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  cursor: submitting ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   marginTop: 8, letterSpacing: '0.01em',
-                  opacity: 1,
+                  opacity: submitting ? 0.6 : 1,
                 }}
               >
-                Put me on the list <ArrowRight size={16} color="#0d0600" w={2.4} />
+                {submitting ? 'Adding you…' : <><span>Put me on the list</span><ArrowRight size={16} color="#0d0600" w={2.4} /></>}
               </button>
               <div style={{
                 fontFamily: 'Nunito, sans-serif', fontSize: 12,
