@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { theme } from '../components/theme';
 import EventRow from '../components/EventRow';
 import { ArrowRight } from '../components/Icons';
-import { RGC_EVENTS, RGC_PAST_EVENTS, fmtDate } from '../data/events';
+import { RGC_EVENTS } from '../data/events';
 import Footer from '../components/Footer';
 import { useIsMobile } from '../hooks/useIsMobile';
 
@@ -139,53 +139,6 @@ export default function EventsPage() {
         {filtered.map((e, i) => (
           <EventRow key={e.id} event={e} idx={i} rsvpState={rsvp[e.id]} onToggle={onRsvp} theme={theme} />
         ))}
-      </section>
-
-      {/* Past events */}
-      <section style={{ padding: isMobile ? '40px 20px 24px' : '48px 40px 32px', borderTop: `1px solid ${theme.line}` }}>
-        <div style={{
-          fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 800,
-          color: theme.inkFaint, letterSpacing: '0.18em', textTransform: 'uppercase',
-          marginBottom: 20,
-        }}>Previously</div>
-        <h2 style={{
-          margin: 0,
-          fontFamily: 'Nunito, sans-serif', fontWeight: theme.headingWeight,
-          fontSize: 'clamp(32px, 4vw, 56px)', lineHeight: 1,
-          letterSpacing: '-0.025em', color: theme.ink,
-        }}>Past nights.</h2>
-        <div style={{ marginTop: 28 }}>
-          {RGC_PAST_EVENTS.map((e, i) => (
-            <div key={e.id} style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '80px 1fr' : '100px 1fr auto',
-              gap: 24, padding: '18px 0',
-              borderTop: i === 0 ? `1px solid ${theme.line}` : 'none',
-              borderBottom: `1px solid ${theme.line}`,
-              alignItems: 'center', opacity: 0.7,
-            }}>
-              <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: theme.inkDim, fontWeight: 700 }}>
-                {fmtDate(e.date, 'stamp')}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-                <div style={{ fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 18, color: theme.ink }}>
-                  {e.venue}
-                </div>
-                <div style={{ fontFamily: 'Nunito, sans-serif', fontSize: 13, color: theme.inkDim }}>
-                  {e.city} · played {e.games.join(', ')}
-                </div>
-              </div>
-              {!isMobile && (
-                <div style={{
-                  fontFamily: 'Nunito, sans-serif', fontSize: 12, fontWeight: 700,
-                  color: theme.inkDim, letterSpacing: '0.04em',
-                }}>
-                  {e.attended} showed up
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* Footer CTA */}
