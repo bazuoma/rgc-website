@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { theme } from '../components/theme';
 import { ArrowRight, CheckIcon } from '../components/Icons';
@@ -9,7 +9,7 @@ import { useIsMobile } from '../hooks/useIsMobile';
 
 const topics = ['General', 'A night I attended', 'Report something', 'Press / partnerships', 'Game testing'];
 
-export default function ContactPage() {
+function ContactForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isMobile = useIsMobile();
@@ -261,5 +261,13 @@ export default function ContactPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div style={{ backgroundColor: theme.bg, minHeight: '100vh' }} />}>
+      <ContactForm />
+    </Suspense>
   );
 }
