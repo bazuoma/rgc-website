@@ -48,7 +48,7 @@ export default function SignupPage() {
           formType: 'signup',
         }),
       });
-    } catch (_) {
+    } catch {
       // Silent — don't block the UX if Mailchimp is down
     }
     setSubmitting(false);

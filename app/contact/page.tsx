@@ -42,7 +42,7 @@ function ContactForm() {
           formType: 'contact',
         }),
       });
-    } catch (_) {
+    } catch {
       // Silent — don't block the UX if Mailchimp is down
     }
     setSubmitting(false);
