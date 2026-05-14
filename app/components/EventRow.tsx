@@ -137,6 +137,27 @@ export default function EventRow({ event, theme, idx = 0 }: {
             </svg>
             {event.address}, {event.city}
           </div>
+
+          {/* Partiful RSVP button — mobile */}
+          {event.partifulUrl && (
+            <a
+              href={event.partifulUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                alignSelf: 'flex-start',
+                background: theme.orange, color: '#0d0600',
+                borderRadius: 999, padding: '10px 20px',
+                fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 13,
+                letterSpacing: '0.02em', cursor: 'pointer',
+                display: 'inline-flex', alignItems: 'center', gap: 7,
+                textDecoration: 'none', whiteSpace: 'nowrap',
+              }}
+            >
+              I&apos;m in <ArrowRight size={13} color="#0d0600" w={2.4} />
+            </a>
+          )}
         </div>
       ) : (
         /* ── Desktop collapsed row ── */
@@ -158,16 +179,37 @@ export default function EventRow({ event, theme, idx = 0 }: {
           </div>
 
           {/* Venue + address */}
-          <div style={{ minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap' }}>
-              <h3 style={{ margin: 0, fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 24, color: theme.ink, letterSpacing: '-0.01em', lineHeight: 1.1 }}>
-                {event.venue}
-              </h3>
-              <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: theme.inkDim, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 1c2 0 3.5 1.5 3.5 3.5 0 2.5-3.5 6-3.5 6s-3.5-3.5-3.5-6C2.5 2.5 4 1 6 1z"/><circle cx="6" cy="4.5" r="1.2"/></svg>
-                {event.address}, {event.city}
-              </span>
+          <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 14, flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 24, color: theme.ink, letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+                  {event.venue}
+                </h3>
+                <span style={{ fontFamily: 'Nunito, sans-serif', fontSize: 14, color: theme.inkDim, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 1c2 0 3.5 1.5 3.5 3.5 0 2.5-3.5 6-3.5 6s-3.5-3.5-3.5-6C2.5 2.5 4 1 6 1z"/><circle cx="6" cy="4.5" r="1.2"/></svg>
+                  {event.address}, {event.city}
+                </span>
+              </div>
             </div>
+            {event.partifulUrl && (
+              <a
+                href={event.partifulUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  flexShrink: 0,
+                  background: theme.orange, color: '#0d0600',
+                  border: 'none', borderRadius: 999, padding: '10px 20px',
+                  fontFamily: 'Nunito, sans-serif', fontWeight: 900, fontSize: 13,
+                  letterSpacing: '0.02em', cursor: 'pointer',
+                  display: 'inline-flex', alignItems: 'center', gap: 7,
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                }}
+              >
+                I&apos;m in <ArrowRight size={13} color="#0d0600" w={2.4} />
+              </a>
+            )}
           </div>
         </div>
       )}

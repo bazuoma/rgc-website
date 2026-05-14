@@ -9,6 +9,7 @@ export interface RgcEvent {
   capacity: number;
   rsvp: number;
   note: string;
+  partifulUrl?: string;
 }
 
 export interface RgcPastEvent {
@@ -21,7 +22,7 @@ export interface RgcPastEvent {
 }
 
 export const RGC_EVENTS: RgcEvent[] = [
-  { id: 'may-27', date: new Date(2026, 4, 27, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', address: '137 Nevada St', games: ['Catan', 'Codenames', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 0, note: 'Our first official night. Come early, grab a pint, meet the crew.' },
+  { id: 'may-27', date: new Date(2026, 4, 27, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', address: '137 Nevada St', games: ['Catan', 'Codenames', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 0, note: 'Our first official night. Come early, grab a pint, meet the crew.', partifulUrl: 'https://partiful.com/e/YsWbiWl4J3eV6ertEaXt?c=NW32BHrP' },
 ];
 
 export const RGC_PAST_EVENTS: RgcPastEvent[] = [
