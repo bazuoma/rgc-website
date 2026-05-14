@@ -105,7 +105,7 @@ export default function SignupPage() {
               fontFamily: 'Nunito, sans-serif', fontSize: 17, lineHeight: 1.55,
               color: theme.inkDim,
             }}>
-              You&apos;re now part of the community. We&apos;ll send you a note when the next night near {form.city || 'you'} goes up — and that&apos;s it. No newsletter, no spam. Just good people and good games.
+              You&apos;re now part of the community. We&apos;ll send you a note when the next night in Los Angeles goes up — and that&apos;s it. No newsletter, no spam. Just good people and good games.
             </p>
             <div style={{ marginTop: 36, display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <button onClick={() => router.push('/events')} style={{

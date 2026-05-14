@@ -25,7 +25,7 @@ function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
 
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
-  const ok = form.name.trim().length > 0 && validEmail && form.msg.trim().length >= 10;
+  const ok = form.name.trim().length > 0 && validEmail && form.msg.trim().length > 0;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
