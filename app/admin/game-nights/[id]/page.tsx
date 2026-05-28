@@ -100,6 +100,7 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
   const [newGroup, setNewGroup] = useState({ name: "", max_size: "4" });
   const [addingGroup, setAddingGroup] = useState(false);
   const [randomizing, setRandomizing] = useState(false);
+  const [addingToGroup, setAddingToGroup] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const stored = localStorage.getItem(AUTH_KEY);
@@ -269,6 +270,32 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
     if (inserts.length > 0) await supabase.from("group_members").insert(inserts);
     await loadGroups();
     setRandomizing(false);
+  };
+
+  const handleAddToGroup = async (groupId: string) => {
+    const attendeeId = addingToGroup[groupId];
+    if (!attendeeId) return;
+    const { data } = await supabase
+      .from("group_members")
+      .insert({ group_id: groupId, attendee_id: attendeeId })
+      .select("id, group_id, attendee_id")
+      .single();
+    if (data) {
+      const attendee = attendees.find(a => a.id === attendeeId);
+      setGroups(prev => prev.map(g => g.id === groupId ? {
+        ...g,
+        members: [...g.members, { id: data.id, attendee_id: attendeeId, attendee_name: attendee?.name ?? "" }],
+      } : g));
+      setAddingToGroup(prev => ({ ...prev, [groupId]: "" }));
+    }
+  };
+
+  const handleRemoveFromGroup = async (groupId: string, memberId: string) => {
+    await supabase.from("group_members").delete().eq("id", memberId);
+    setGroups(prev => prev.map(g => g.id === groupId ? {
+      ...g,
+      members: g.members.filter(m => m.id !== memberId),
+    } : g));
   };
 
   const downloadQR = () => {
@@ -501,43 +528,73 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
                   {groups.length === 0 && (
                     <p style={{ fontFamily: f, color: "#64748b", fontSize: "14px" }}>No groups yet. Add one below.</p>
                   )}
-                  {groups.map(group => (
-                    <div key={group.id} style={{ backgroundColor: "#12121e", border: "1px solid #1e1e35", borderRadius: "10px", padding: "18px 20px" }}>
-                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px", gap: "10px", flexWrap: "wrap" }}>
-                        <div>
-                          <span style={{ fontFamily: f, fontWeight: 900, color: "#e2e8f0", fontSize: "16px" }}>{group.name}</span>
-                          <span style={{ marginLeft: "8px", fontFamily: f, fontSize: "12px", color: "#64748b" }}>
-                            (max {group.max_size})
-                          </span>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <select
-                            value={group.game_id ?? ""}
-                            onChange={e => handleAssignGame(group.id, e.target.value)}
-                            style={{ fontFamily: f, backgroundColor: "#0a0a0f", border: "1px solid #1e1e35", color: group.game_id ? "#93c5fd" : "#64748b", borderRadius: "6px", padding: "5px 10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", colorScheme: "dark", outline: "none" }}
-                          >
-                            <option value="">Assign game…</option>
-                            {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
-                          </select>
-                          <SmallBtn onClick={() => handleDeleteGroup(group.id)} danger>Delete</SmallBtn>
-                        </div>
-                      </div>
-
-                      {group.members.length === 0 ? (
-                        <p style={{ fontFamily: f, color: "#475569", fontSize: "12px" }}>
-                          No members assigned — click Randomize.
-                        </p>
-                      ) : (
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                          {group.members.map(m => (
-                            <span key={m.id} style={{ fontFamily: f, backgroundColor: "#8b5cf615", border: "1px solid #8b5cf630", color: "#a78bfa", borderRadius: "20px", padding: "3px 10px", fontSize: "13px", fontWeight: 700 }}>
-                              {m.attendee_name}
+                  {groups.map(group => {
+                    const assignedIds = new Set(groups.flatMap(g => g.members.map(m => m.attendee_id)));
+                    const unassigned = attendees.filter(a => !assignedIds.has(a.id));
+                    const isFull = group.members.length >= group.max_size;
+                    return (
+                      <div key={group.id} style={{ backgroundColor: "#12121e", border: "1px solid #1e1e35", borderRadius: "10px", padding: "18px 20px" }}>
+                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px", gap: "10px", flexWrap: "wrap" }}>
+                          <div>
+                            <span style={{ fontFamily: f, fontWeight: 900, color: "#e2e8f0", fontSize: "16px" }}>{group.name}</span>
+                            <span style={{ marginLeft: "8px", fontFamily: f, fontSize: "12px", color: "#64748b" }}>
+                              {group.members.length}/{group.max_size}
                             </span>
-                          ))}
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <select
+                              value={group.game_id ?? ""}
+                              onChange={e => handleAssignGame(group.id, e.target.value)}
+                              style={{ fontFamily: f, backgroundColor: "#0a0a0f", border: "1px solid #1e1e35", color: group.game_id ? "#93c5fd" : "#64748b", borderRadius: "6px", padding: "5px 10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", colorScheme: "dark", outline: "none" }}
+                            >
+                              <option value="">Assign game…</option>
+                              {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
+                            </select>
+                            <SmallBtn onClick={() => handleDeleteGroup(group.id)} danger>Delete</SmallBtn>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  ))}
+
+                        {group.members.length === 0 ? (
+                          <p style={{ fontFamily: f, color: "#475569", fontSize: "12px" }}>
+                            No members assigned — click Randomize or add manually below.
+                          </p>
+                        ) : (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "10px" }}>
+                            {group.members.map(m => (
+                              <span key={m.id} style={{ fontFamily: f, backgroundColor: "#8b5cf615", border: "1px solid #8b5cf630", color: "#a78bfa", borderRadius: "20px", padding: "3px 10px 3px 12px", fontSize: "13px", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                                {m.attendee_name}
+                                <button
+                                  onClick={() => handleRemoveFromGroup(group.id, m.id)}
+                                  style={{ fontFamily: f, background: "none", border: "none", color: "#7c3aed", cursor: "pointer", fontSize: "14px", lineHeight: 1, padding: "0", fontWeight: 900 }}
+                                  title="Remove"
+                                >×</button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {!isFull && unassigned.length > 0 && (
+                          <div style={{ display: "flex", gap: "8px", alignItems: "center", marginTop: "8px" }}>
+                            <select
+                              value={addingToGroup[group.id] ?? ""}
+                              onChange={e => setAddingToGroup(prev => ({ ...prev, [group.id]: e.target.value }))}
+                              style={{ fontFamily: f, backgroundColor: "#0a0a0f", border: "1px solid #1e1e35", color: addingToGroup[group.id] ? "#e2e8f0" : "#64748b", borderRadius: "6px", padding: "5px 10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", colorScheme: "dark", outline: "none", flex: 1 }}
+                            >
+                              <option value="">Add attendee…</option>
+                              {unassigned.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
+                            </select>
+                            <button
+                              onClick={() => handleAddToGroup(group.id)}
+                              disabled={!addingToGroup[group.id]}
+                              style={{ fontFamily: f, backgroundColor: addingToGroup[group.id] ? "#8b5cf620" : "transparent", color: addingToGroup[group.id] ? "#a78bfa" : "#475569", border: `1px solid ${addingToGroup[group.id] ? "#8b5cf640" : "#1e1e35"}`, borderRadius: "6px", padding: "5px 12px", fontWeight: 700, fontSize: "12px", cursor: addingToGroup[group.id] ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {/* Add group form */}
