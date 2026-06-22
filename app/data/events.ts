@@ -22,10 +22,11 @@ export interface RgcPastEvent {
 }
 
 export const RGC_EVENTS: RgcEvent[] = [
-  { id: 'may-27', date: new Date(2026, 4, 27, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', address: '137 Nevada St', games: ['Catan', 'Codenames', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 0, note: 'Our first official night. Come early, grab a pint, meet the crew.', partifulUrl: 'https://partiful.com/e/YsWbiWl4J3eV6ertEaXt?c=NW32BHrP' },
+  { id: 'jun-26', date: new Date(2026, 5, 26, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', address: '137 Nevada St', games: ['Catan', 'Codenames', 'Ticket to Ride'], type: 'Board games', capacity: 24, rsvp: 0, note: 'Back at Five Point Five. Come early, grab a pint, meet the crew.', partifulUrl: 'https://partiful.com/e/lsmHqnEdIwbIPtwCkf4A?c=LI8ava17' },
 ];
 
 export const RGC_PAST_EVENTS: RgcPastEvent[] = [
+  { id: 'may-27', date: new Date(2026, 4, 27, 19, 0), venue: 'Five Point Five Brewing', city: 'El Segundo, CA', games: ['Catan', 'Codenames', 'Ticket to Ride'], attended: 0 },
   { id: 'apr-19', date: new Date(2026, 3, 19, 19, 0), venue: 'Brewport', city: 'El Segundo, CA', games: ['Catan', 'Wingspan'], attended: 22 },
   { id: 'apr-12', date: new Date(2026, 3, 12, 18, 30), venue: '33 Taps', city: 'Culver City, CA', games: ['Smash Bros.', 'Mario Kart'], attended: 26 },
   { id: 'apr-05', date: new Date(2026, 3, 5, 19, 0), venue: 'The Bungalow', city: 'Santa Monica, CA', games: ['Poker', 'Codenames'], attended: 18 },
