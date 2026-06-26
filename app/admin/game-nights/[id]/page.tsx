@@ -215,12 +215,14 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
   const handleAddGame = async (e: React.FormEvent) => {
     e.preventDefault();
     setAddingGame(true);
-    const { data } = await supabase
+    const { error } = await supabase
       .from("games")
-      .insert({ game_night_id: id, name: newGame.name.trim(), player_count: parseInt(newGame.player_count) })
-      .select()
-      .single();
-    if (data) { setGames(prev => [...prev, data as Game]); setNewGame({ name: "", player_count: "4" }); }
+      .insert({ game_night_id: id, name: newGame.name.trim(), player_count: parseInt(newGame.player_count) });
+    if (!error) {
+      const { data } = await supabase.from("games").select("*").eq("game_night_id", id).order("created_at");
+      if (data) setGames(data as Game[]);
+      setNewGame({ name: "", player_count: "4" });
+    }
     setAddingGame(false);
   };
 
@@ -234,12 +236,13 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
   const handleAddGroup = async (e: React.FormEvent) => {
     e.preventDefault();
     setAddingGroup(true);
-    const { data } = await supabase
+    const { error } = await supabase
       .from("groups")
-      .insert({ game_night_id: id, name: newGroup.name.trim(), max_size: parseInt(newGroup.max_size) })
-      .select()
-      .single();
-    if (data) { setGroups(prev => [...prev, { ...(data as GroupWithMembers), members: [] }]); setNewGroup({ name: "", max_size: "4" }); }
+      .insert({ game_night_id: id, name: newGroup.name.trim(), max_size: parseInt(newGroup.max_size) });
+    if (!error) {
+      await loadGroups();
+      setNewGroup({ name: "", max_size: "4" });
+    }
     setAddingGroup(false);
   };
 
@@ -275,17 +278,23 @@ export default function GameNightDetailPage({ params }: { params: { id: string }
   const handleAddToGroup = async (groupId: string) => {
     const attendeeId = addingToGroup[groupId];
     if (!attendeeId) return;
-    const { data } = await supabase
+    const { error } = await supabase
       .from("group_members")
-      .insert({ group_id: groupId, attendee_id: attendeeId })
-      .select("id, group_id, attendee_id")
-      .single();
-    if (data) {
+      .insert({ group_id: groupId, attendee_id: attendeeId });
+    if (!error) {
       const attendee = attendees.find(a => a.id === attendeeId);
-      setGroups(prev => prev.map(g => g.id === groupId ? {
-        ...g,
-        members: [...g.members, { id: data.id, attendee_id: attendeeId, attendee_name: attendee?.name ?? "" }],
-      } : g));
+      const { data } = await supabase
+        .from("group_members")
+        .select("id")
+        .eq("group_id", groupId)
+        .eq("attendee_id", attendeeId)
+        .single();
+      if (data) {
+        setGroups(prev => prev.map(g => g.id === groupId ? {
+          ...g,
+          members: [...g.members, { id: data.id, attendee_id: attendeeId, attendee_name: attendee?.name ?? "" }],
+        } : g));
+      }
       setAddingToGroup(prev => ({ ...prev, [groupId]: "" }));
     }
   };

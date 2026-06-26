@@ -105,13 +105,15 @@ export default function GameNightsAdminPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setCreating(true);
-    const { data } = await supabase
-      .from("game_nights")
-      .insert({ ...newNight })
-      .select()
-      .single();
-    if (data) {
-      setRows(prev => [{ ...(data as GameNight), attendee_count: 0 }, ...prev]);
+    const { error } = await supabase.from("game_nights").insert({ ...newNight });
+    if (!error) {
+      const { data } = await supabase
+        .from("game_nights")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+      if (data) setRows(prev => [{ ...(data as GameNight), attendee_count: 0 }, ...prev]);
       setNewNight({ name: "", date: "", time: "", location: "" });
       setShowCreate(false);
     }
