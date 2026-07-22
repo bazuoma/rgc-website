@@ -77,45 +77,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Community Pillars ── */}
-      <section style={{ padding: isMobile ? '0 20px 48px' : '0 40px 64px' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: isMobile ? 0 : 40,
-        }}>
-          {[
-            {
-              title: 'Real people. Real friendships.',
-              body: "No usernames. No avatars. Just strangers who become regulars and regulars who become friends. The kind of community you can't build in a group chat.",
-            },
-            {
-              title: 'Show up once. Belong immediately.',
-              body: "Walk in alone, leave with a crew. We're the kind of club where showing up twice means you're already a regular. Everyone gets a name tag for a reason.",
-            },
-            {
-              title: 'Games are the glue.',
-              body: "Board games, card games, tabletop strategy — rotating each night, taught on the spot. No experience needed. Just bring yourself.",
-            },
-          ].map((p) => (
-            <div key={p.title} style={{
-              padding: isMobile ? '24px 0' : '28px 0',
-              borderTop: `2px solid ${theme.orange}`,
-              fontFamily: 'Nunito, sans-serif',
-            }}>
-              <h3 style={{
-                margin: 0, fontSize: 19, fontWeight: 900,
-                color: theme.ink, letterSpacing: '-0.01em', lineHeight: 1.2,
-              }}>{p.title}</h3>
-              <p style={{
-                margin: '10px 0 0', fontSize: 15,
-                color: theme.inkDim, lineHeight: 1.6, fontWeight: 500,
-              }}>{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── Game Testing Callout ── */}
       <section style={{ padding: isMobile ? '0 20px 48px' : '0 40px 64px' }}>
         <div style={{
